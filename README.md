@@ -69,15 +69,23 @@ Within a particular ecosystem, there may be a common way of installing things, s
 1. System setup for iOS
     1. Download Xcode from the app store
     2. Install Xcode command line tools, run below command in terminal
-       `sudo xcode-select --install`
+       ```zsh
+       sudo xcode-select --install
+       ```
     3. Install Homebrew, run below command in terminal
-       `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+       ```zsh
+       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+       ```
     4. Install carthage, run below command in terminal
-       `brew install carthage`
+       ```zsh
+       brew install carthage
+       ```
     
 2. System setup for Android
     1. Run below command in terminal to see the JDK path
-       `/usr/libexec/java_home`
+       ```zsh
+       /usr/libexec/java_home
+       ```
        If you haven't downloaded JDK, download [JDK](https://www.oracle.com/java/technologies/downloads/#jdk20-linux)
     2. Download [Android Studio](https://developer.android.com/studio)
     3. Open up Android Studio -> customize -> all settings -> Android SDK under Appearance & Behavior/System Settings -> SDK Tools tab
@@ -85,32 +93,44 @@ Within a particular ecosystem, there may be a common way of installing things, s
 
 3. Install Appium
     1. Need to download 2.0.0-beta. version
-      `npm install -g appium@next`
+      ```zsh
+      npm install -g appium@next
+      ```
       Add sudo infront the command if asks for permission. You can check the version by typing `appium -v` in terminal
     2. Download appium-doctor
-      `npm install -g appium-doctor` then run command `appium-doctor`
+      ```zsh
+      'npm install -g appium-doctor' then run command 'appium-doctor'
+      ```
     3. If either ANDROID_HOME or JAVA_HOME shows X, need to set the path
         - Setting ANDROID_HOME
             1. If your terminal is in zsh, run `vim ~/.zprofile`. Then add below commands inside the .zprofile
-            `export ANDROID_HOME=~/Library/Android/sdk`
-            `export PATH=$PATH:$ANDROID_HOME/platform-tools`
-            `export PATH=$PATH:$ANDROID_HOME/tools`
-            `export PATH=$PATH:$ANDROID_HOME/tools/bin`
-            `export PATH=$PATH:$ANDROID_HOME/emulator`
+            ```zsh
+            export ANDROID_HOME=~/Library/Android/sdk
+            export PATH=$PATH:$ANDROID_HOME/platform-tools
+            export PATH=$PATH:$ANDROID_HOME/tools
+            export PATH=$PATH:$ANDROID_HOME/tools/bin
+            export PATH=$PATH:$ANDROID_HOME/emulator
+            ```
             
         - Setting JAVA_HOME
             1. Get JDK path from Step 2.1
             2. Add the command inside .zprofile
-               `export JAVA_HOME=YOUR JDK PATH`
+               ```zsh
+               export JAVA_HOME=YOUR-JDK-PATH
+               ```
 
         - Close the terminal and re-open it. Run `appium-doctor` to see X mark changed to O
 
     4. Install appium drivers
-      `appium driver install uiautomator2`
-      `appium driver install xcuitest`
+      ```zsh
+      appium driver install uiautomator2
+      appium driver install xcuitest
+      ```
 
 4. Run Appium
-   `appium` or `appium --base-path /wd/hub`
+   ```zsh
+   appium --base-path /wd/hub
+   ```
 
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
