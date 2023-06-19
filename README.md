@@ -52,10 +52,10 @@ When you're ready to make this README your own, just edit this file and use the 
 Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
 ## Name
-Choose a self-explaining name for your project.
+Integration Testing
 
 ## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Appium codebase for (i) Performance Ranch, (ii) Blockyard Mobile (iii) Performance Beef (iv) An intern side gig for deploying an actual Twitter bot farm.
 
 ## Badges
 On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
@@ -65,6 +65,52 @@ Depending on what you are making, it can be a good idea to include screenshots o
 
 ## Installation
 Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+1. System setup for iOS
+    1. Download Xcode from the app store
+    2. Install Xcode command line tools, run below command in terminal
+       `sudo xcode-select --install`
+    3. Install Homebrew, run below command in terminal
+       `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+    4. Install carthage, run below command in terminal
+       `brew install carthage`
+    
+2. System setup for Android
+    1. Run below command in terminal to see the JDK path
+       `/usr/libexec/java_home`
+       If you haven't downloaded JDK, download [JDK](https://www.oracle.com/java/technologies/downloads/#jdk20-linux)
+    2. Download [Android Studio](https://developer.android.com/studio)
+    3. Open up Android Studio -> customize -> all settings -> Android SDK under Appearance & Behavior/System Settings -> SDK Tools tab
+       Check Android SDK Build-Tools 34, Android SDK Command-line Tools, Android Emulator, Android SDK Platform-Tools, Intel x86 Emulator Accelerator (HAXM installer) is installed
+
+3. Install Appium
+    1. Need to download 2.0.0-beta. version
+      `npm install -g appium@next`
+      Add sudo infront the command if asks for permission. You can check the version by typing `appium -v` in terminal
+    2. Download appium-doctor
+      `npm install -g appium-doctor` then run command `appium-doctor`
+    3. If either ANDROID_HOME or JAVA_HOME shows X, need to set the path
+        - Setting ANDROID_HOME
+            1. If your terminal is in zsh, run `vim ~/.zprofile`. Then add below commands inside the .zprofile
+            `export ANDROID_HOME=~/Library/Android/sdk`
+            `export PATH=$PATH:$ANDROID_HOME/platform-tools`
+            `export PATH=$PATH:$ANDROID_HOME/tools`
+            `export PATH=$PATH:$ANDROID_HOME/tools/bin`
+            `export PATH=$PATH:$ANDROID_HOME/emulator`
+            
+        - Setting JAVA_HOME
+            1. Get JDK path from Step 2.1
+            2. Add the command inside .zprofile
+               `export JAVA_HOME=YOUR JDK PATH`
+
+        - Close the terminal and re-open it. Run `appium-doctor` to see X mark changed to O
+
+    4. Install appium drivers
+      `appium driver install uiautomator2`
+      `appium driver install xcuitest`
+
+4. Run Appium
+   `appium` or `appium --base-path /wd/hub`
 
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
