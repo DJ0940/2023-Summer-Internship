@@ -44,8 +44,7 @@ public class WebLogin {
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("pass")))))
                 .sendKeys(password);
 
-
-        //driver.findElement(By.className("login")).click();
+        // Click login button
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("login")))))
                 .click();
 
@@ -61,8 +60,6 @@ public class WebLogin {
 
     /**
      * Check if the element is visible, if not scroll to that element and return it
-     *
-     * Need to check if this function is working correctly
      */
     private WebElement checkVisibilityOrScroll(WebElement element) {
         if (element.isDisplayed()) {
