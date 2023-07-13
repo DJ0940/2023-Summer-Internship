@@ -13,9 +13,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebLogin {
+
     private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
+    // Constructor
+    WebLogin() {
+        this.setUp();
+    }
 
     @Before
     public void setUp() {
@@ -23,16 +28,6 @@ public class WebLogin {
         driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(500, 600));
         wait = new WebDriverWait(driver, TIMEWAIT);
-    }
-
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
-
-    @Test
-    public void test() {
-        webLogin("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
     }
 
     /**
@@ -43,14 +38,14 @@ public class WebLogin {
         driver.get(url);
 
         // Pass in the username and password
-        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf((WebElement) By.id("user"))))
+        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("user")))))
                 .sendKeys(username);
-        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf((WebElement) By.id("pass"))))
-                .sendKeys(username);
+        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("pass")))))
+                .sendKeys(password);
 
         // Login
         //driver.findElement(By.className("login")).click();
-        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf((WebElement) By.className("login"))))
+        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("login")))))
                 .click();
 
         // Check if login was successful , this may return stale element error because the element cannot be reached after logging in

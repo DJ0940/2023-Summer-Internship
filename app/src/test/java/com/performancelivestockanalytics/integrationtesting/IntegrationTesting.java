@@ -32,44 +32,7 @@ public class IntegrationTesting {
 
     @Test
     public void test() {
-        webLogin("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
-    }
-
-    /**
-     * Login function for Performance Beef Web
-     */
-    public void webLogin(String url, String username, String password) {
-        // Navigate to the url (Beef or Ranch)
-        driver.get(url);
-
-        // Pass in the username and password
-        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf((WebElement) By.id("user"))))
-                .sendKeys(username);
-        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf((WebElement) By.id("pass"))))
-                .sendKeys(username);
-
-        // Login
-        //driver.findElement(By.className("login")).click();
-        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf((WebElement) By.className("login"))))
-                .click();
-
-        // Check if login was successful , this may return stale element error because the element cannot be reached after logging in
-        assert(driver.findElement(By.id("user")).isDisplayed());
-    }
-
-    /**
-     * Check if the element is visible, if not scroll to that element and return it
-     *
-     * Need to check if this function is working correctly
-     */
-    private WebElement checkVisibilityOrScroll(WebElement element) {
-        if (element.isDisplayed()) {
-            return element;
-        } else {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("arguments[0].scrollIntoView(true);", element);
-
-            return wait.until(ExpectedConditions.visibilityOf(element));
-        }
+        WebLogin login = new WebLogin();
+        login.webLogin("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
     }
 }
