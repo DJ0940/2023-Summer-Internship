@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -43,13 +44,19 @@ public class WebLogin {
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("pass")))))
                 .sendKeys(password);
 
-        // Login
+
         //driver.findElement(By.className("login")).click();
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("login")))))
                 .click();
 
-        // Check if login was successful , this may return stale element error because the element cannot be reached after logging in
-        assert(driver.findElement(By.id("user")).isDisplayed());
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("account"))));
+
+        try {
+            driver.findElement(By.id("user"));
+        }
+        catch (NoSuchElementException nse) {
+            // Success
+        }
     }
 
     /**
