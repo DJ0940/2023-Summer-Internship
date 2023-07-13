@@ -33,7 +33,7 @@ public class  PRLogInTest implements LogInInterface {
     }
 
     @Override
-    public void logIn(String user, String pass, String targetServer) {
+    public void logIn(String targetServer, String user, String pass) {
 
         WebDriverWait wait = new WebDriverWait(driver, 3);
         WebDriverWait syncwait = new WebDriverWait(driver, 20);
