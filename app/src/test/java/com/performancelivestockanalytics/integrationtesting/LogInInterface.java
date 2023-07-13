@@ -8,7 +8,7 @@ public interface LogInInterface<T> {
 
     void tearDown();
 
-    void logIn(String URL, String username, String password);
+    void logIn(String targetServer, String username, String password);
 
     T getDriver();
 }
