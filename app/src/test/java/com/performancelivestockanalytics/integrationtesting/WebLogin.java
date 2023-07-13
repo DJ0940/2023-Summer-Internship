@@ -16,27 +16,41 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  * Web Login Abstract class
  */
 public class WebLogin {
-
     private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
-    // Constructor
-    WebLogin() {
+
+    /**
+     * Constructor
+     * @return driver
+     */
+    public WebLogin(WebDriver driver) {
+        this.driver = driver;
         this.setUp();
     }
 
     public void setUp() {
-        //System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(500, 600));
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
+    
+    public void tearDown() {
+        driver.quit();
+    }
+
+    /**
+     * Return the driver
+     */
+    public WebDriver returnDriver() {
+        return driver;
+    }
 
     /**
      * Login function for Performance Beef Web
      */
-    public void webLogin(String url, String username, String password) {
+    public void login(String url, String username, String password) {
         // Navigate to the url (Beef or Ranch)
         driver.get(url);
 
