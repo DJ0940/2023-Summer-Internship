@@ -12,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class IntegrationTesting {
+public class WebLogin {
     private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
