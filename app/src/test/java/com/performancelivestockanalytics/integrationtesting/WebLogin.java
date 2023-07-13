@@ -1,8 +1,5 @@
 package com.performancelivestockanalytics.integrationtesting;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,6 +10,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Web Login Abstract class
+ */
 public class WebLogin {
 
     private static final int TIMEWAIT = 3;
@@ -23,7 +23,6 @@ public class WebLogin {
         this.setUp();
     }
 
-    @Before
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         driver = new ChromeDriver();
@@ -48,8 +47,10 @@ public class WebLogin {
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("login")))))
                 .click();
 
+        // Wait until the login was successful and navigated to the default view
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("account"))));
 
+        // Return errors when the username for login page is still visible (login not successful)
         try {
             driver.findElement(By.id("user"));
         }
