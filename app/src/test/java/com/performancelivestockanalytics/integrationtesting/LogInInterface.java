@@ -1,6 +1,8 @@
 package com.performancelivestockanalytics.integrationtesting;
 
-public interface LogInInterface {
+public interface LogInInterface<T> {
+    static final int TIMEWAIT = 3;
+    static final int SYNCWAIT = 20;
 
     void setUp();
 
@@ -8,5 +10,5 @@ public interface LogInInterface {
 
     void logIn(String URL, String username, String password);
 
-
+    T getDriver();
 }
