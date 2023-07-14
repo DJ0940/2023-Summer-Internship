@@ -11,30 +11,26 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.net.MalformedURLException;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class IntegrationTesting {
-    private static final int TIMEWAIT = 3;
-    private WebDriverWait wait;
-    private WebDriver driver;
 
+    public PBLogIn  login = new PBLogIn();
     @Before
-    public void setUp() {
-        //System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(500, 600));
-        wait = new WebDriverWait(driver, TIMEWAIT);
+    public void setUp() throws MalformedURLException {
+        login.setUp();
     }
 
     @After
     public void tearDown() {
-        driver.quit();
+       login.tearDown();
     }
 
     @Test
-    public void test() {
-        WebLogin login = new WebLogin();
-        login.webLogin("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
+    public void test() throws Exception {
+        login.logIn("beta\n", "***REMOVED***", "***REMOVED***");
     }
 }
