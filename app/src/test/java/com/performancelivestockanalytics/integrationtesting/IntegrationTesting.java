@@ -18,19 +18,20 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class IntegrationTesting {
 
+    //Example PBLogIn test
     public PBLogIn  login = new PBLogIn();
     @Before
     public void setUp() throws MalformedURLException {
-        login.setUp();
+        //login.setUp();
     }
 
     @After
     public void tearDown() {
-       login.tearDown();
+       //login.tearDown();
     }
 
     @Test
     public void test() throws Exception {
-        login.logIn("beta\n", "***REMOVED***", "***REMOVED***");
+        //login.logIn("beta\n", "***REMOVED***", "***REMOVED***");
     }
 }

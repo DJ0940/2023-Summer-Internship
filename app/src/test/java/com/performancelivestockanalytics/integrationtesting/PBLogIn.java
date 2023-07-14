@@ -23,6 +23,8 @@ public class PBLogIn implements LogInInterface {
         caps.setCapability("platformName", "iOS");
         caps.setCapability("platformVersion", "16.4");
         caps.setCapability("deviceName", "iPhone SE (3rd generation)");
+
+        //The next line is still not abstracted
         caps.setCapability("app", "/Users/logan/Library/Developer/Xcode/DerivedData/Performance_Beef-ajqdjnukyedrzgbbtcnrrshahdkp/Build/Products/Debug-iphonesimulator/Performance Beef.app");
         caps.setCapability("automationName", "XCUITest");
 
@@ -36,6 +38,8 @@ public class PBLogIn implements LogInInterface {
         }
     }
 
+    //IMPORTANT: You still have to manual click on the bluetooth devices button.
+    //Still working on a solution
     @Override
     public void logIn(String targetServer, String user, String pass) throws Exception {
 
@@ -82,6 +86,8 @@ public class PBLogIn implements LogInInterface {
            the desired tap rate in quick succession.
            */
 
+        //Lines 91-96 allow Appium to scroll to the Bluetooth Devices bar.
+        //Don't forget to click it a few times!
         HashMap<String,Object>scrollObject = new HashMap<>();
 
         scrollObject.put("direction","down");
@@ -186,6 +192,8 @@ public class PBLogIn implements LogInInterface {
         }
 
         try {
+            //This is the code for the iPhone xpath since the capabilites set up this
+            //Test for the iPhone SE
             driver.findElementByXPath("//XCUIElementTypeApplication"+
                     "[@name=\"Performance Beef\"]/XCUIElementTypeWindow/XCUIElementTypeOther"+
                     "/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther"+
