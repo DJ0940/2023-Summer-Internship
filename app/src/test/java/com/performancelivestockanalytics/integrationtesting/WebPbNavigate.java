@@ -27,6 +27,9 @@ public class WebPbNavigate {
      * Inside PB, navigate to overview page (home / default page)
      */
     public void navigateToOverview() {
+        // Refresh the page. To remove the pop up or it doesn't see the left (bottom if window size is small) scroll bar (overview, sheets, delivery, etc)
+        driver.navigate().refresh();
+
         // Navigate to overview page
         checkVisibilityOrScroll(driver.findElement(By.className("nav-overview"))).click();
 
