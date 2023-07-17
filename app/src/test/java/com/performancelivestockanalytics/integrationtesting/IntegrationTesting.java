@@ -37,6 +37,6 @@ public class IntegrationTesting {
     @Test
     public void test() throws Exception {
 
-        //test.logIn("https://ranch.***REMOVED***", "tst@testing.com", "***REMOVED***");
+        //test.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
     }
 }
