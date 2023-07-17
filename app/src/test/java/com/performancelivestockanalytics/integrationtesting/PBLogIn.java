@@ -18,7 +18,7 @@ public class PBLogIn implements LogInInterface {
     private IOSDriver driver;
 
     @Override
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws Exception{
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("platformName", "iOS");
         caps.setCapability("platformVersion", "16.4");
@@ -204,6 +204,7 @@ public class PBLogIn implements LogInInterface {
         }
 
         throw new Exception("Failed to login");
+
     }
 
     @Override

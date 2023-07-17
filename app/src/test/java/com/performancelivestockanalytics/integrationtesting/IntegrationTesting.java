@@ -19,9 +19,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class IntegrationTesting {
 
     //Example PBLogIn test
-    public PBLogIn  login = new PBLogIn();
+    //public PBLogIn  login = new PBLogIn();
     @Before
-    public void setUp() throws MalformedURLException {
+    public void setUp() throws Exception {
         //login.setUp();
     }
 

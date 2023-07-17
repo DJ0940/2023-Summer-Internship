@@ -6,7 +6,7 @@ public interface LogInInterface<T> {
     static final int TIMEWAIT = 3;
     static final int SYNCWAIT = 20;
 
-    void setUp() throws MalformedURLException;
+    void setUp() throws Exception;
 
     void tearDown();
 
