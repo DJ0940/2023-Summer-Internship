@@ -13,7 +13,7 @@ import java.util.HashMap;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBLogIn implements LogInInterface {
+public class PBLogin implements LogInInterface {
 
     private IOSDriver driver;
 
