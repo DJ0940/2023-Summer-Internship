@@ -1,5 +1,6 @@
 package com.performancelivestockanalytics.integrationtesting;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -33,7 +34,7 @@ public class  PRLogInTest implements LogInInterface {
     }
 
     @Override
-    public void logIn(String targetServer, String user, String pass) {
+    public void logIn(String targetServer, String user, String pass) throws Exception {
 
         WebDriverWait wait = new WebDriverWait(driver, 3);
         WebDriverWait syncwait = new WebDriverWait(driver, 20);
@@ -79,7 +80,25 @@ public class  PRLogInTest implements LogInInterface {
         //we are already at the home screen
         driver.findElementById("com.perfomancebeef.android:id/login_btn").click();
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(
-                MobileBy.AccessibilityId("Open navigation drawer")));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ie) {
+        }
+
+        //If the username text box is no longer detected means that the test has passed
+        try {
+            driver.findElement(MobileBy.id("com.perfomancebeef.android:id/login_user_name_text"));
+        }
+        catch (NoSuchElementException nse) {
+            return;
+        }
+
+        throw new Exception("Failed to login");
+    }
+
+
+    @Override
+    public AndroidDriver getDriver() {
+            return driver;
     }
 }
