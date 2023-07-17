@@ -12,33 +12,44 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-/**
- * Web Login Abstract class
- */
-public class WebLogin {
+public class PRWebLogin implements LogInInterface{
 
-    private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
-    // Constructor
-    WebLogin() {
+
+    /**
+     * Constructor
+     */
+    PRWebLogin() {
         this.setUp();
     }
 
+    @Override
     public void setUp() {
-        //System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(500, 600));
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
 
+    @Override
+    public void tearDown() {
+        driver.quit();
+    }
+
+
+    @Override
+    public WebDriver getDriver() {
+        return driver;
+    }
+
     /**
-     * Login function for Performance Beef Web
+     * Login function for Performance Ranch Web
      */
-    public void webLogin(String url, String username, String password) {
+    @Override
+    public void logIn(String targetServer, String username, String password) {
         // Navigate to the url (Beef or Ranch)
-        driver.get(url);
+        driver.get(targetServer);
 
         // Pass in the username and password
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("user")))))
@@ -49,9 +60,6 @@ public class WebLogin {
         // Click login button
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("login")))))
                 .click();
-
-        // Wait until the login was successful and navigated to the default view
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("account"))));
 
         // Return errors when the username for login page is still visible (login not successful)
         try {
