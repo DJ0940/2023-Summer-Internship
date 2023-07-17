@@ -20,7 +20,7 @@ public class IntegrationTesting {
 
     @Test
     public void test() {
-        WebLogin login = new WebLogin();
+        PBWebLogin login = new PBWebLogin();
         driver = login.getDriver();
         login.logIn("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
     }

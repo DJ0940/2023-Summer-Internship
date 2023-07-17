@@ -12,17 +12,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-/**
- * Web Login Abstract class
- */
-public class WebLogin implements LogInInterface{
+public class PRWebLogin implements LogInInterface{
+
     private WebDriverWait wait;
     private WebDriver driver;
 
     /**
      * Constructor
      */
-    WebLogin() {
+    PRWebLogin() {
         this.setUp();
     }
 
@@ -46,7 +44,7 @@ public class WebLogin implements LogInInterface{
     }
 
     /**
-     * Login function for Performance Beef Web
+     * Login function for Performance Ranch Web
      */
     @Override
     public void logIn(String targetServer, String username, String password) {
