@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Performance Beef: Navigate to the overview page
  */
-public class WebPbNavigate {
+public class PBWebNavigate {
     private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
@@ -18,7 +18,7 @@ public class WebPbNavigate {
     /**
      * Constructor
      */
-    WebPbNavigate(WebDriver driver) {
+    PBWebNavigate(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
