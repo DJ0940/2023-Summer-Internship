@@ -12,7 +12,7 @@ import java.net.URL;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class  PRLogInTest implements LogInInterface {
+public class  PRLogin implements LogInInterface {
     private AndroidDriver driver;
 
     @Override

@@ -3,7 +3,7 @@ package com.performancelivestockanalytics.integrationtesting;
 
 import java.net.MalformedURLException;
 
-public interface LogInInterface {
+public interface LogInInterface<T> {
 
     void setUp() throws Exception;
 

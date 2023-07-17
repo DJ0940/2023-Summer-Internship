@@ -18,26 +18,25 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class IntegrationTesting {
 
-    IOSDriver iOSdriver;
-    AndroidDriver AndroidDriver;
-    ChromeDriver ChromeDriver;
 
-    PRLogInTest test = new PRLogInTest();
+
+    //Examole PRLogin Test
+    //PRLogin test = new PRLogin();
 
 
     @Before
     public void setUp() throws Exception {
-        test.setUp();
+        //test.setUp();
     }
 
     @After
     public void tearDown() {
-        test.tearDown();
+        //test.tearDown();
     }
 
     @Test
     public void test() throws Exception {
 
-        test.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
+        //test.logIn("https://ranch.***REMOVED***", "tst@testing.com", "***REMOVED***");
     }
 }
