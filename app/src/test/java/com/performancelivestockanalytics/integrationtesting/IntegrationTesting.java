@@ -17,8 +17,8 @@ public class IntegrationTesting {
 
 
 
-    //Examole PRLogin Test
-    //PRLogin test = new PRLogin();
+    //Examole PRAndroidLogin Test
+    //PRAndroidLogin test = new PRAndroidLogin();
 
 
     @Before
