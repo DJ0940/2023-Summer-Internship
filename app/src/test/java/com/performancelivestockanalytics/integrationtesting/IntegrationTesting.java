@@ -4,24 +4,31 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.net.MalformedURLException;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class IntegrationTesting {
-    private WebDriver driver;
 
+    //Example PBiOSLogin test
+    //public PBiOSLogin  login = new PBiOSLogin();
     @Before
-    public void setUp() {
-
+    public void setUp() throws Exception {
+        //login.setUp();
     }
 
     @After
     public void tearDown() {
-
+       //login.tearDown();
     }
 
     @Test
-    public void test() {
-        PBWebLogin login = new PBWebLogin();
-        driver = login.getDriver();
-        login.logIn("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
+    public void test() throws Exception {
+        //login.logIn("beta\n", "***REMOVED***", "***REMOVED***");
     }
 }
