@@ -18,8 +18,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class IntegrationTesting {
 
-    //Example PBLogin test
-    //public PBLogin  login = new PBLogin();
+    //Example PBiOSLogin test
+    //public PBiOSLogin  login = new PBiOSLogin();
     @Before
     public void setUp() throws Exception {
         //login.setUp();
