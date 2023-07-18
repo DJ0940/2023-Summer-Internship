@@ -1,5 +1,7 @@
 package com.performancelivestockanalytics.integrationtesting;
 
+import java.net.MalformedURLException;
+
 public interface LogInInterface<T> {
     static final int TIMEWAIT = 3;
     static final int SYNCWAIT = 20;
