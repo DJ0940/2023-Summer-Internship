@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class WebPrNavigate {
+public class PRWebNavigate {
     private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
@@ -15,7 +15,7 @@ public class WebPrNavigate {
     /**
      * Constructor
      */
-    WebPrNavigate(WebDriver driver) {
+    PRWebNavigate(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
