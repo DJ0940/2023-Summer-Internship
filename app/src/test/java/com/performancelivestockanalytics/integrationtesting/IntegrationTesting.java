@@ -15,12 +15,8 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class IntegrationTesting {
 
-
-
     //Examole PRAndroidLogin Test
     //PRAndroidLogin test = new PRAndroidLogin();
-
-
     @Before
     public void setUp() throws Exception {
         //test.setUp();
