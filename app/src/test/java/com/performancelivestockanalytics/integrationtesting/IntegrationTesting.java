@@ -22,6 +22,6 @@ public class IntegrationTesting {
     public void test() {
         PBWebLogin login = new PBWebLogin();
         driver = login.getDriver();
-        login.logIn("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
+        login.logIn("https://ranch.***REMOVED***/", "***REMOVED***", "***REMOVED***");
     }
 }

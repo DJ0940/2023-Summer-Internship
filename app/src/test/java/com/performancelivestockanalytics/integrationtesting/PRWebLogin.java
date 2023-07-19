@@ -63,7 +63,7 @@ public class PRWebLogin implements LogInInterface{
 
         // Return errors when the username for login page is still visible (login not successful)
         try {
-            driver.findElement(By.id("user"));
+            driver.findElement(By.id("accountButton"));
         }
         catch (NoSuchElementException nse) {
             // Success
