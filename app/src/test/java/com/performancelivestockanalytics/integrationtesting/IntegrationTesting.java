@@ -1,5 +1,7 @@
 package com.performancelivestockanalytics.integrationtesting;
 
+import android.util.Log;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,8 @@ public class IntegrationTesting {
 
     //Examole PRAndroidLogin Test
     //PRAndroidLogin test = new PRAndroidLogin();
+    PBiOSLogin login = new PBiOSLogin();
+    PBiOSNavigate nav = new PBiOSNavigate();
     @Before
     public void setUp() throws Exception {
         //test.setUp();
@@ -24,12 +28,12 @@ public class IntegrationTesting {
 
     @After
     public void tearDown() {
+        login.tearDown();
         //test.tearDown();
     }
 
     @Test
     public void test() throws Exception {
-
         //test.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
     }
 }
