@@ -17,23 +17,23 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class IntegrationTesting {
 
-    //Examole PRAndroidLogin Test
-    //PRAndroidLogin test = new PRAndroidLogin();
-    PBiOSLogin login = new PBiOSLogin();
-    PBiOSNavigate nav = new PBiOSNavigate();
+    //Example PBiOSLogin and PBiOSNavigate test
+    //PBiOSLogin login = new PBiOSLogin();
+    //PBiOSNavigate nav = new PBiOSNavigate();
     @Before
     public void setUp() throws Exception {
-        //test.setUp();
+        //login.setUp();
+        //nav.setUp(login.getDriver());
     }
 
     @After
     public void tearDown() {
-        login.tearDown();
-        //test.tearDown();
+        //login.tearDown();
     }
 
     @Test
     public void test() throws Exception {
-        //test.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
+        //login.logIn("beta\n", "***REMOVED***", "***REMOVED***");
+        //nav.navigateToOverview();
     }
 }

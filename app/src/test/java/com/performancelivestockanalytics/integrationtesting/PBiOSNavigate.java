@@ -18,7 +18,7 @@ public class PBiOSNavigate {
         driver = d;
     }
 
-    public void navigate() {
+    public void navigateToOverview() {
 
         /* Setup both of the waits. Using wait will give the driver 3 seconds to find an element
            while syncwait gives the driver 20 seconds. Sync wait is useful if the user is syncing data
