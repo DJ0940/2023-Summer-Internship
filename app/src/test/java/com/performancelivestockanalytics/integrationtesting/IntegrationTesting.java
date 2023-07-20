@@ -21,5 +21,8 @@ public class IntegrationTesting {
     public void test() {
         PRWebLogin login = new PRWebLogin();
         login.login("https://ranch.***REMOVED***/", "***REMOVED***", "***REMOVED***");
+        // Clean up the login driver.
+        login.tearDown();
+
     }
 }
