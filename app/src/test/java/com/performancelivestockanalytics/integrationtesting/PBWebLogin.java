@@ -63,13 +63,10 @@ public class PBWebLogin implements LogInInterface{
         checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("login")))))
                 .click();
 
-        // Return errors when the username for login page is still visible (login not successful)
-        try {
-            driver.findElement(By.id("user"));
-        }
-        catch (NoSuchElementException nse) {
-            // Success
-        }
+        // Check for the Account button
+        checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("accountButton")))))
+                .click();
+
     }
 
     /**
