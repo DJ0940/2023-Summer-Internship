@@ -25,7 +25,7 @@ public class PRAndroidNavigate {
         }
     }
 
-    public void navigateToHome() {
+    public void navigateToOverview() {
         //Same as the PRAndroidLogin, the driver is allowed to wait up to three seconds to find an element.
         WebDriverWait wait = new WebDriverWait(driver, 3);
 

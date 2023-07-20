@@ -15,21 +15,23 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class IntegrationTesting {
 
-    //Examole PRAndroidLogin Test
-    //PRAndroidLogin test = new PRAndroidLogin();
+    //Example PRAndroidLogin and PRAndroidNavigate test
+    //PRAndroidLogin login = new PRAndroidLogin();
+    //PRAndroidNavigate nav = new PRAndroidNavigate();
     @Before
     public void setUp() throws Exception {
-        //test.setUp();
+       //login.setUp();
+       //nav.setUp(login.getDriver());
     }
 
     @After
     public void tearDown() {
-        //test.tearDown();
+        //login.tearDown();
     }
 
     @Test
     public void test() throws Exception {
-
-        //test.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
+        //login.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
+        //nav.navigateToOverview();
     }
 }
