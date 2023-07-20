@@ -67,13 +67,9 @@ public class PRWebLogin implements LoginInterface{
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("login"))))
                 .click();
 
-        // Return errors when the username for login page is still visible (login not successful)
-        try {
-            wait.until(visibilityOfElementLocated(By.id("accountButton")));
-        }
-        catch (NoSuchElementException nse) {
-            // Success
-        }
+        // Check for the Account button
+        assert(checkVisibilityOrScroll(wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("accountButton"))))).isDisplayed());
+
     }
 
     private WebElement checkVisibilityOrScroll(WebElement element) {
