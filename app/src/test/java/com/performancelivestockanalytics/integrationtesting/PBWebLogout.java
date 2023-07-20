@@ -20,7 +20,10 @@ public class PBWebLogout {
     }
 
     public void logOut() {
-        // Assume that there is no pop-up and is able to access account setting when it's called
+        // We need to remove any pop-ups, so by refreshing the page it will remove them and the account setting button will be visible
+        driver.navigate().refresh();
+
+        // After removing any pop-ups, navigate the user to the account setting where the log out button is located
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("account-settings-glyphicon")))).click();
 
         // Wait for the account setting page to load, then click the log out button
