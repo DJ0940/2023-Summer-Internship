@@ -20,6 +20,6 @@ public class IntegrationTesting {
     @Test
     public void test() {
         PRWebLogin login = new PRWebLogin();
-        login.logIn("https://ranch.***REMOVED***/", "***REMOVED***", "***REMOVED***");
+        login.login("https://ranch.***REMOVED***/", "***REMOVED***", "***REMOVED***");
     }
 }

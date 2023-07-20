@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class PBWebLogin implements LogInInterface{
+public class PBWebLogin implements LoginInterface{
     private WebDriverWait wait;
     private WebDriver driver;
 
@@ -49,7 +49,7 @@ public class PBWebLogin implements LogInInterface{
     }
 
     @Override
-    public void logIn(String targetServer, String username, String password) {
+    public void login(String targetServer, String username, String password) {
         // Pass in the targetServer to make the driver load the URL
         driver.get(targetServer);
 
