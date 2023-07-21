@@ -28,18 +28,18 @@ public class PBiOSNavigate {
         WebDriverWait wait = new WebDriverWait(driver, 3);
         WebDriverWait syncwait = new WebDriverWait(driver, 20);
 
-        //Check to see if the user is already at the overview.
-        //If they are the test will end in a success.
+        // Check to see if the driver is already at the overview.
+        // If they are the test will end in a success.
         try {
             driver.findElementByAccessibilityId("+/- Head");
             return;
         } catch (NoSuchElementException nse) {
         }
 
-        //This takes care of all of the checks if the user is in the New Session area.
+        //T his takes care of all of the checks if the driver is in the New Session area.
         newSessionChecks();
 
-        //Check to see if the user is loading into the app right after logging in.
+        // Check to see if the driver is loading into the app right after logging in.
         try {
             driver.findElementByAccessibilityId("Reloading all account data...");
             syncwait.until(
@@ -49,23 +49,23 @@ public class PBiOSNavigate {
         } catch (NoSuchElementException nse) {
         }
 
-        //Check to see if a user needs to press a cancel button.
-        //Example: used when discarding an animal in "Add Animal."
+        // Check to see if the driver needs to press a cancel button.
+        // Example: used when discarding an animal in "Add Animal."
         try {
             driver.findElementByAccessibilityId("Cancel").click();
         } catch (NoSuchElementException nse) {
         }
 
 
-        //Check to see if the user needs to click a close button.
-        //This is for a very specific case and I can't seem to repeat the steps for it to appear.
-        //However, it can appear and must be dealt with.
+        // Check to see if the driver needs to click a close button.
+        // This is for a very specific case and I can't seem to repeat the steps for it to appear.
+        // However, it can appear and must be dealt with.
         try {
             driver.findElementByAccessibilityId("Close").click();
         } catch (NoSuchElementException nse) {
         }
 
-        //Check to see if the user has clicked on a QR code. Simply the test will click out of it.
+        // Check to see if the driver has clicked on a QR code. Simply the test will click out of it.
         try {
             driver.findElementByAccessibilityId("You're running in the simulator" +
                     ", which means the camera isn't available. Tap anywhere to send back " +
@@ -73,24 +73,24 @@ public class PBiOSNavigate {
         } catch (NoSuchElementException nse) {
         }
 
-        //Find the hamburger icon and click it.
+        // Find the hamburger icon and click it.
         driver.findElementByAccessibilityId("HamburgerIcon").click();
 
-        //Wait for Feedyard Web View to be present and click on it.
+        // Wait for Feedyard Web View to be present and click on it.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("webView"))).click();
 
-        //If the user starts a new session then tries to leave a popup will appear
-        //with two options (stay/leave). Inorder to get to the dashboard we must click leave.
+        // If the previous starts a new session then tries to leave a popup will appear
+        // with two options (stay/leave). Inorder to get to the dashboard the driver must click leave.
         try {
             driver.findElementByAccessibilityId("Leave").click();
         } catch (NoSuchElementException nse) {
         }
 
-        //Make sure the user has loaded into the dashboard by checking for the presence of the
-        //+/- head button. If the driver finds it then the test passes. If the driver doesn't find it
-        //the test will fail.
+        // Make sure the driver has loaded into the dashboard by checking for the presence of the
+        // +/- head button. If the driver finds it then the test passes. If the driver doesn't find it
+        // the test will fail.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("+/- Head")));
@@ -98,11 +98,11 @@ public class PBiOSNavigate {
 
     public void newSessionChecks(){
 
-        //This method checks to see if the user has pressed start new session
+        // This method checks to see if the previous has pressed start new session.
 
-        //This will exit this screen if the user is typing on the top text box
-        //or if the user has just pressed "Start New Session" w/o performing
-        //any more actions
+        // This will exit this screen if the driver is typing on the top text box
+        // or if the driver has just pressed "Start New Session" w/o performing
+        // any more actions
         try{
             driver.findElementByAccessibilityId("Notes");
             driver.findElementByAccessibilityId("Name").click();
@@ -111,7 +111,7 @@ public class PBiOSNavigate {
         } catch (NoSuchElementException nse){
         }
 
-        //This will exit this screen if the user is typing on the bottom text box
+        // This will exit this screen if the driver is typing on the bottom text box
         try{
             driver.findElementByAccessibilityId("Done Editing").click();
             driver.findElementByAccessibilityId("Back").click();
