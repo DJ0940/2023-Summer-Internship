@@ -12,7 +12,7 @@ import java.util.HashMap;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSLogin implements LogInInterface {
+public class PBiOSLogin implements LoginInterface {
     private IOSDriver driver;
 
     @Override
@@ -36,7 +36,7 @@ public class PBiOSLogin implements LogInInterface {
         // The XCUITest is used because that is the automator for iOS.
         caps.setCapability("automationName", "XCUITest");
 
-        //  The driver is set with the desired capabilities and the Appium url.
+        // The driver is set with the desired capabilities and the Appium url.
         // Inorder to run the test make sure to run the command appium --base-path /wd/hub
         // into your systems terminal.
         driver = new IOSDriver(new URL("http://localhost:4723/wd/hub"), caps);
@@ -52,7 +52,7 @@ public class PBiOSLogin implements LogInInterface {
 
     // IMPORTANT: You still have to manual click on the bluetooth devices button.
     @Override
-    public void logIn(String targetServer, String user, String pass) throws Exception {
+    public void login(String targetServer, String user, String pass) throws Exception {
 
         /* When looking for an element on a new screen it takes time for the new
            screen to load. The WebDriverWait variable is created so when the driver looks
