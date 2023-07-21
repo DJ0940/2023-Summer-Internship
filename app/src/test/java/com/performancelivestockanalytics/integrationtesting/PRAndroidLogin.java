@@ -12,7 +12,7 @@ import java.net.URL;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class  PRAndroidLogin implements LogInInterface {
+public class  PRAndroidLogin implements LoginInterface {
     private AndroidDriver driver;
 
     @Override
@@ -34,7 +34,7 @@ public class  PRAndroidLogin implements LogInInterface {
     }
 
     @Override
-    public void logIn(String targetServer, String user, String pass) throws Exception {
+    public void login(String targetServer, String user, String pass) throws Exception {
 
         WebDriverWait wait = new WebDriverWait(driver, 3);
         WebDriverWait syncwait = new WebDriverWait(driver, 20);
