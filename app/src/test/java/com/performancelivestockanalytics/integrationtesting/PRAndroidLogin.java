@@ -27,19 +27,19 @@ public class  PRAndroidLogin implements LogInInterface {
         caps.setCapability("platformVersion", "13.0");
         caps.setCapability("deviceName", "Pixel_3a_API_33_arm64-v8a|");
 
-        //Android uses UiAutomator2 for their automation platform.
+        // Android uses UiAutomator2 for their automation platform.
         caps.setCapability("automationName", "UiAutomator2");
 
-        //Still not abstracted out yet.
+        // TODO: Abstract this out to a JSON file.
         caps.setCapability("app", "/Users/logan/pb-android/app/build/intermediates/apk/debug/app-debug.apk");
 
-        //Now we set the driver with the capabilities we just set and the appium url.
-        //Inorder to run the test make sure to run the command appium --base-path /wd/hub
-        //into your systems terminal.
+        //  The driver is set with the
+        // Inorder to run the test make
+        // into your systems terminal.
         driver = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), caps);
     }
 
-    //This method quits the driver which will shut down the emulator and appium driver.
+    // This method quits the driver which will shut down the emulator and appium driver.
     @Override
     public void tearDown() {
         if (driver != null) {
@@ -51,7 +51,7 @@ public class  PRAndroidLogin implements LogInInterface {
     public void logIn(String targetServer, String user, String pass) throws Exception {
 
         /* When looking for an element on a new screen it takes time for the new
-           screen to load. We create this WebDriverWait variable so when we look
+           screen to load. This WebDriverWait is created variable so when the driver looks
            for an element on a new screen the driver will keeping looking for
            the element for up to 3 seconds before throwing an error. If the driver doesn't
            wait while a new screen is loading then an error will be thrown because the driver can't
@@ -60,50 +60,50 @@ public class  PRAndroidLogin implements LogInInterface {
         WebDriverWait wait = new WebDriverWait(driver, 3);
 
 
-        /* We need to click on the PR Logo 11 times in quick succession in order to change
-           the target server. We can't just wait for the PR Logo on the login screen
+        /* The driver needs to click on the PR Logo 11 times in quick succession in order to change
+           the target server. The driver can't just wait for the PR Logo on the login screen
            to appear because it has the same AccessibilityId as the PR Logo that shows
-           when the user is loading into the app. To get around this we wait for the presence
-           of the login button which confirms we are on the login screen.
+           when the user is loading into the app. To get around this the driver waits for the presence
+           of the login button which confirms it is on the login screen.
          */
         wait.until(ExpectedConditions.presenceOfElementLocated(
                 MobileBy.id("com.perfomancebeef.android:id/login_btn")));
 
-        //Now we click on the logo 11 times which will allow us to change the target server.
+        // Now the driver click on the logo 11 times which will allow it to change the target server.
         for(int i = 0; i < 11; i++) {
             driver.findElementByAccessibilityId("PR Logo").click();
         }
 
 
-        //The driver waits for the text box to appear then it sends in the the URL of the
-        //target server.
+        // The driver waits for the text box to appear then it sends in the the URL of the
+        // target server.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.id("com.perfomancebeef.android:id/edit_server_string"))).sendKeys(targetServer);
 
-        //Now the driver finds the save button and clicks it.
+        // Now the driver finds the save button and clicks it.
          driver.findElementById("com.perfomancebeef.android:id/edit_server_save_btn").click();
 
 
-        //Wait until we are back at the original login screen and enter in the username.
+        // Wait until the driver is back at the original login screen and enter in the username.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.id("com.perfomancebeef.android:id/login_user_name_text"))).sendKeys(user);
 
-        //Now that we are at the home screen we can just find the password text box without waiting.
-        //The driver sends in the password
+        // Now that the home screen is present the driver can find the password text box without waiting and
+        // the driver sends in the password.
         driver.findElementById("com.perfomancebeef.android:id/login_password_text").sendKeys(pass);
 
-        //Again don't need to wait for the login button since
-        //we are already at the home screen and the driver clicks it
+        // Again don't need to wait for the login button since
+        // the home screen is already present and the driver clicks it
         driver.findElementById("com.perfomancebeef.android:id/login_btn").click();
 
         /* When entering in incorrect login information the app goes into a loading
-           screen and then returns to the login screen. This can cause problems because we
-           detect a successful login by the presence of the username text box. So if the user
+           screen and then returns to the login screen. This can cause problems because it
+           detects a successful login by the presence of the username text box. So if the user
            enters incorrect login info and the screen goes right into the loading screen while
-           the test checks for the presence of the text box it would result in a success. We get
-           around this by forcing the program to wait for two seconds to allow the app to catch up.
+           the test checks for the presence of the text box it would result in a success. The solution
+           is forcing the program to wait for two seconds to allow the app to catch up.
          */
         try {
             Thread.sleep(2000);
@@ -111,7 +111,7 @@ public class  PRAndroidLogin implements LogInInterface {
         }
 
         /* If the driver cannot detect the username text box after the app has caught up that
-           means the test has passed. So if the text box is not detected we catch the
+           means the test has passed. So if the text box is not detected it catches the
            NoSuchElementException and return which will pass the test. If the driver does
            detect the text box then the test has failed and an error will be thrown.
          */
@@ -126,8 +126,8 @@ public class  PRAndroidLogin implements LogInInterface {
     }
 
 
-    //This method returns the driver that is being used to run this test.
-    //The driver will be used in other tests such as PRAndroidNavigateToDashBoard
+    // This method returns the driver that is being used to run this test.
+    // The driver will be used in other tests such as PRAndroidNavigateToDashBoard
     @Override
     public AndroidDriver getDriver() {
             return driver;
