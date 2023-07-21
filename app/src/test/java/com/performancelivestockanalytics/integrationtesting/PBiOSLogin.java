@@ -52,7 +52,7 @@ public class PBiOSLogin implements LogInInterface {
 
     // IMPORTANT: You still have to manual click on the bluetooth devices button.
     @Override
-    public void logIn(String targetServer, String user, String pass) throws Exception {
+    public void login(String targetServer, String user, String pass) throws Exception {
 
         /* When looking for an element on a new screen it takes time for the new
            screen to load. The WebDriverWait variable is created so when the driver looks

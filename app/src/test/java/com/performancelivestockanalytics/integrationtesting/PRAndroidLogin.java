@@ -11,7 +11,7 @@ import java.net.URL;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class  PRAndroidLogin implements LogInInterface {
+public class  PRAndroidLogin implements LoginInterface {
     private AndroidDriver driver;
 
     /* The setUp method creates the driver that appium uses.
@@ -48,7 +48,7 @@ public class  PRAndroidLogin implements LogInInterface {
     }
 
     @Override
-    public void logIn(String targetServer, String user, String pass) throws Exception {
+    public void login(String targetServer, String user, String pass) throws Exception {
 
         /* When looking for an element on a new screen it takes time for the new
            screen to load. This WebDriverWait is created variable so when the driver looks
