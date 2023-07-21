@@ -18,8 +18,6 @@ public class IntegrationTesting {
 
     @Test
     public void test() {
-        PRWebLogin login = new PRWebLogin();
-        login.login("https://ranch.***REMOVED***/", "***REMOVED***", "***REMOVED***");
-
+        // Master branch leaves this empty for now -PG
     }
 }
