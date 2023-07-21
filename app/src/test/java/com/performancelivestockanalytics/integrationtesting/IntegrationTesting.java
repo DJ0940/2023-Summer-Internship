@@ -15,6 +15,7 @@ public class IntegrationTesting {
     }
 
     @Test
-    public void test() throws Exception {
+    public void test() {
+        // Master branch leaves this empty for now -PG
     }
 }
