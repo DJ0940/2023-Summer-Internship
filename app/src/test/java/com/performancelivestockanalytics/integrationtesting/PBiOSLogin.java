@@ -6,31 +6,43 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSLogin implements LogInInterface {
-
+public class PBiOSLogin implements LoginInterface {
     private IOSDriver driver;
 
     @Override
     public void setUp() throws Exception{
+        /* The setUp method creates the driver that appium uses.
+           The capabilities can be changed depending on the attributes of your
+           emulator. The emulator that this test is using is an iPhone SE (3rd generation)
+           running on iOS 16.4. Changing the capabilities is quite intuitive, just change
+           the second parameter to the desired attribute of your emulator.
+         */
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("platformName", "iOS");
         caps.setCapability("platformVersion", "16.4");
         caps.setCapability("deviceName", "iPhone SE (3rd generation)");
 
-        //The next line is still not abstracted
-        caps.setCapability("app", "/Users/logan/Library/Developer/Xcode/DerivedData/Performance_Beef-ajqdjnukyedrzgbbtcnrrshahdkp/Build/Products/Debug-iphonesimulator/Performance Beef.app");
+        // TODO: Abstract this out to a JSON file.
+        caps.setCapability("app", "/Users/logan/Library/Developer/Xcode/" +
+                "DerivedData/Performance_Beef-ajqdjnukyedrzgbbtcnrrshahdkp/Build/Products/Debug-" +
+                "iphonesimulator/Performance Beef.app");
+
+        // The XCUITest is used because that is the automator for iOS.
         caps.setCapability("automationName", "XCUITest");
 
+        // The driver is set with the desired capabilities and the Appium url.
+        // Inorder to run the test make sure to run the command appium --base-path /wd/hub
+        // into your systems terminal.
         driver = new IOSDriver(new URL("http://localhost:4723/wd/hub"), caps);
     }
 
+    // This method quits the driver which will shut down the emulator and appium driver.
     @Override
     public void tearDown(){
         if (driver != null) {
@@ -38,56 +50,34 @@ public class PBiOSLogin implements LogInInterface {
         }
     }
 
-    //IMPORTANT: You still have to manual click on the bluetooth devices button.
-    //Still working on a solution
+    // IMPORTANT: You still have to manual click on the bluetooth devices button.
     @Override
-    public void logIn(String targetServer, String user, String pass) throws Exception {
+    public void login(String targetServer, String user, String pass) throws Exception {
 
+        /* When looking for an element on a new screen it takes time for the new
+           screen to load. The WebDriverWait variable is created so when the driver looks
+           for an element on a new screen the driver will keeping looking for
+           the element for up to 3 seconds before throwing an error. If the driver doesn't
+           wait while a new screen is loading then an error will be thrown because the driver can't
+           instantly find the desired element.
+        */
         WebDriverWait wait = new WebDriverWait(driver, 3);
 
-        /* When the app first fires up, the target server should be set
-           prior to the access/modification of user data.  The process of
-           setting the target server begins by selecting the gear icon.
-
-           From the Appium Inspector, we can get the correct handle for the
-           gear icon from its accessibility id: "SettingsIcon."
-           */
-
-        // For an overview of the hooks that can be used to get the handle
-        // of the appropriate component, peruse:
-        //   https://www.lambdatest.com/blog/locators-in-appium/
-
-        /* The first hook that is used is by AccessibilityId */
+        /* Because the app is just loading in the driver waits for the settings button to load in the
+           top left corner of the screen. Appium inspector presents the preferred handle
+           for the settings button is finding it by its AccessibilityId which is "SettingsIcon".
+           There are quite a few handles for finding elements such as AccessibilityId, id, className,
+           xpath, and more.
+         */
         WebElement settings = wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("SettingsIcon")));
+
+        // After finding the settings button the driver clicks it.
         settings.click();
 
-        /* There are several approaches to bringing up the server configuration
-           configuration screen.  The approach taken herein will be to quad-tap
-           the bluetooth devices bar.
-
-           One drawback of the smaller iPhone layout is that the target for
-           the desired action may not be visible by default.  If this is the case,
-           we can move the view up until the bluetooth devices bar is
-           visible.
-           */
-
-        //makeBluetoothBarVisible();
-
-        /* As a result of the prior call, the Bluetooth Devices bar should be visible
-           (that was it's purpose).  The next step is to quad (or more) tap on the
-           main label area.
-
-           "Unfortunately," Appium's TouchActions and MultiTap infrastructure is too
-           slow to emulate this.
-
-           Instead, the architecture-specific script of "tapWithNumberOfTaps" gets
-           the desired tap rate in quick succession.
-           */
-
-        //Lines 91-96 allow Appium to scroll to the Bluetooth Devices bar.
-        //Don't forget to click it a few times!
+        // Lines 82-87 allow Appium to scroll to the Bluetooth Devices bar.
+        // TODO: Resurrect a way to automate multitap.
         HashMap<String,Object>scrollObject = new HashMap<>();
 
         scrollObject.put("direction","down");
@@ -95,62 +85,50 @@ public class PBiOSLogin implements LogInInterface {
 
         driver.executeScript("mobile:scroll", scrollObject);
 
-
-
-        /* Wait for the transition to the server setup screen, then grab the
-           "DevBox" button. The "DevBox" button is
-           chosen here as that should always be visible.
-           */
-
+        // Now that the test is on the screen that allows the user to change the target server
+        // the driver waits for the Dev Box to load in and click it.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("DevBox"))).click();
 
-
-        /* The next assumption is that the input box for the server
-           string will be visible.  Find it and populate it with the
-           server string.
-
-           Unlike previous handles, here there is no "id", no "associated id," and
-           essentially no other mechanism to get the handle for the input box other
-           than using the system-specific xpath approach.
-           */
-        WebElement customServerHost = wait.until(
+        /* After the Dev Box has been clicked the driver waits for the text box to enter in the target
+           server to load in. This time Appium Inspector says that xpath is the preferred (and only)
+           handle to search for the text box. Usually it is ideal to avoid xpath because it can lead
+           to inconsistent testing. After the driver finds the text box the sendKeys method is used.
+           sendKeys writes the target server into the text field. It is important to note that the
+           targetServer variable/parameter should have a string that ends with the new line character
+           "\n" so which will allow the driver to exit the text box.
+         */
+        wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.xpath("//XCUIElementTypeApplication" +
                                 "[@name=\"Performance Beef\"]/XCUIElementTypeWindow[1]" +
                                 "/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElement" +
-                                "TypeOther/XCUIElementTypeTextField")));
+                                "TypeOther/XCUIElementTypeTextField"))).sendKeys(targetServer);
 
-        customServerHost.sendKeys(targetServer);
-
-        // Save the changes
+        // Now the driver waits for the button that says Update to appear then the driver clicks on it.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Update"))).click();
 
+        // Next a button that says close should appear on the same screen and the driver clicks it.
+        // Unfortunately xpath must be used again.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.xpath("(//XCUIElementTypeButton[@name=\"Close\"])[2]"))).click();
 
-        // Back out of the stack
+        // Now the driver waits for the next close button to appear in the new
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Close"))).click();
 
 
-        /* The next step is to actually log in.  There are some obstacles in
-           the process here, inasmuch as there are only xpath hooks available
-           to get the corresponding username and password input handles.
-
-           Further the iPad and iPhone layouts have differing xpath targets.
-           */
-
-
         WebElement userName;
         WebElement password;
 
-        // First check to see if this is an iPad and check the iPad's XPATH to the username input:
+        // This next section checks to see if the user is using an iPhone or iPad emulator
+        // by checking the xpath of the username and password text boxes.
+        // TODO: Give the username and password text boxes unique Accessibility ID's.
         if (driver.findElementsByXPath("//XCUIElementTypeApplication"+
                 "[@name=\"Performance Beef\"]/XCUIElementTypeWindow/XCUIElementTypeOther"
                 +"/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther"
@@ -176,28 +154,36 @@ public class PBiOSLogin implements LogInInterface {
                     "/XCUIElementTypeSecureTextField");
         }
 
-        // If we get to here and still have no userName (or password), the
-        // next line will fail as it should.
+        // If the driver gets to here and still have no userName (or password), the
+        // next line will fail as it should. The next lines send in the username and password
         userName.sendKeys(user);
         password.sendKeys(pass);
 
-        WebElement login = wait.until(
+        // Now the driver finds and clicks on the login button
+        wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.AccessibilityId("Login")));
-        login.click();
+                        MobileBy.AccessibilityId("Login"))).click();
 
+
+        /* Now the test is forced to wait for three seconds while the app keeps running.
+           The test is forced to wait because it takes the app a couple seconds to register that
+           login has been pressed and to enter in the new screen that syncs the users information
+           if the login was successful. Waiting three seconds will allow the app to catch up
+           for the next part of the test.
+         */
         try {
             Thread.sleep(3000);
         } catch (InterruptedException ie) {
         }
 
+        /* This checks to see if the driver can still detect the settings button. If it can't
+           that means the login was successful. So this catches the error that would be thrown
+           since the settings button can't be found and it returns passing the test. If the driver
+           still detects the settings button even after waiting three seconds for the app to load
+           that means the login was unsuccessful and will fail the test.
+         */
         try {
-            //This is the code for the iPhone xpath since the capabilites set up this
-            //Test for the iPhone SE
-            driver.findElementByXPath("//XCUIElementTypeApplication"+
-                    "[@name=\"Performance Beef\"]/XCUIElementTypeWindow/XCUIElementTypeOther"+
-                    "/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther"+
-                    "/XCUIElementTypeTextField");
+            driver.findElementByAccessibilityId("SettingsIcon");
         }
         catch (NoSuchElementException nse) {
             return;
@@ -207,6 +193,8 @@ public class PBiOSLogin implements LogInInterface {
 
     }
 
+    // This method returns the driver that is being used to run this test.
+    // The driver will be used in other tests such as PBiOSNavigateToDashBoard.
     @Override
     public IOSDriver getDriver(){
         return driver;
