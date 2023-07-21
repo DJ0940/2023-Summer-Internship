@@ -13,7 +13,7 @@ import java.util.HashMap;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSLogin implements LogInInterface {
+public class PBiOSLogin implements LoginInterface {
 
     private IOSDriver driver;
 
@@ -41,7 +41,7 @@ public class PBiOSLogin implements LogInInterface {
     //IMPORTANT: You still have to manual click on the bluetooth devices button.
     //Still working on a solution
     @Override
-    public void logIn(String targetServer, String user, String pass) throws Exception {
+    public void login(String targetServer, String user, String pass) throws Exception {
 
         WebDriverWait wait = new WebDriverWait(driver, 3);
 

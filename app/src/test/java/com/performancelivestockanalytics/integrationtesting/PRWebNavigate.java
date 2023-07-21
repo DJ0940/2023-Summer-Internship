@@ -9,12 +9,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class PBWebNavigate {
+public class PRWebNavigate {
     private static final int TIMEWAIT = 3;
     private WebDriverWait wait;
     private WebDriver driver;
 
-    PBWebNavigate(WebDriver driver) {
+    PRWebNavigate(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
@@ -28,12 +28,10 @@ public class PBWebNavigate {
            */
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("nav-overview")))).click();
 
-
         /* Now confirm the navigation to overview. If successful, the assert will pass.
            Determine the success by the existence of animals(pull-right class)
            */
         assert(wait.until(visibilityOfElementLocated(By.className("pull-right"))).isDisplayed());
-
     }
 
     private WebElement checkVisibilityOrScroll(WebElement element) {
@@ -47,4 +45,5 @@ public class PBWebNavigate {
             return wait.until(ExpectedConditions.visibilityOf(element));
         }
     }
+
 }
