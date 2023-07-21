@@ -59,6 +59,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3'
     implementation 'io.github.bonigarcia:webdrivermanager:5.4.0'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation group: 'io.appium', name: 'java-client', version: '7.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
