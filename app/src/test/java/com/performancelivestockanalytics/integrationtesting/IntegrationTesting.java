@@ -19,8 +19,6 @@ public class IntegrationTesting {
 
     @Test
     public void test() {
-        PBWebLogin login = new PBWebLogin();
-        WebDriver driver = login.getDriver();
-        login.logIn("https://***REMOVED***/", "***REMOVED***", "***REMOVED***");
+        // Master branch leaves this empty for now -PG
     }
 }
