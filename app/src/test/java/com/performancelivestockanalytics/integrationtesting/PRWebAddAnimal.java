@@ -2,9 +2,12 @@ package com.performancelivestockanalytics.integrationtesting;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -26,8 +29,8 @@ public class PRWebAddAnimal {
      * Add an animal with minimum requirements for it to be transferred to Performance Beef
      * Role is fixed to Calf
      *
-     * @param animalName (Visual ID)
      * @param birthDate  (year-month-date)
+     * @param visualID   (animal name)
      * @param gender     (Steer Bull Heifer)
      * @param breed      (Just one breed as 100%)
      */
@@ -80,10 +83,19 @@ public class PRWebAddAnimal {
 
 
     public void addCalf(String birthDate, String visualID, String eID, String brandTattoo, String vigor, String gender, String origin,
-                        String herd, String pasture, String sireID, String damID, String damBcsBirth, String breed, String color,
+                        String purchaseDate, String herd, String pasture, String sireID, String damID, String damBcsBirth, String breed, String color,
                         String hornedStatus, String birthWeight, String birthPasture, String managementCode, String calvingEase, String notes) {
+
+        /**
+         * The Sire ID and Dam ID lists doesn't show up without refreshing the page after logging in
+         */
+        driver.navigate().refresh();
+
         // Click Add animal button
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='addAnimalButton']")))).click();
+
+        // Set Role to Calf
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("select.form-control#roleSelector option[value='calf']")))).click();
 
         // Set Birthdate
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(birthDate);
@@ -106,9 +118,13 @@ public class PRWebAddAnimal {
         // Set Gender - applies same thing as Vigor
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys(gender);
 
-        // Set Origin - default value is "Raised"
-        // Need to check what happens if empty string is passed to origin (Does "Raised" remain the same?)
+        // Set Origin
+        // If the origin is purchased, purchase date tab appears
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='origin']")))).sendKeys(origin);
+        if (origin.equals("Purchased")) {
+            // Set Purchase Date
+            checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='purchase_date']")))).sendKeys(purchaseDate);
+        }
 
         // Set Herd
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='herd_id']")))).sendKeys(herd);
@@ -158,7 +174,7 @@ public class PRWebAddAnimal {
             List<WebElement> dam = driver.findElements(By.id("modal-select-button"));
             for (WebElement el : dam) {
                 if (el.getText().contains("Dam")) {
-                    assert(el.getText().trim().equals("Set " + damID + " as Sire to"));
+                    assert(el.getText().trim().equals("Set " + damID + " as Dam to"));
                     el.click();
                     break;
                 }
@@ -212,9 +228,23 @@ public class PRWebAddAnimal {
         // Click Add Animal
         driver.findElement(By.id("addAnimalButton")).click();
 
-        // Refresh the page to load the added animal
-        // When there is an existing animal, it will not add it
-        driver.navigate().refresh();
+        /* Wait for the add animal page to be disappeared if the animal was added successfully. Because it may fail the test due to the delay*/
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        /**
+         * At this point, we need to check if the animal was actually added (no duplicate visualID , incorrect EID format, etc)
+         * Here we look for the add animal button we just clicked and if that is still visible, we make the test fail. Else, test succeed
+         */
+        try {
+            driver.findElement(By.id("addAnimalButton")).click();
+            Assert.fail("Animal not added successfully");
+        } catch(ElementNotInteractableException ene) {
+            // Animal Added Successfully
+        }
     }
 
     private WebElement checkVisibilityOrScroll(WebElement element) {

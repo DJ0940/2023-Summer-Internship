@@ -3,33 +3,36 @@ package com.performancelivestockanalytics.integrationtesting;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import io.appium.java_client.ios.IOSDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import io.appium.java_client.android.AndroidDriver;
 
 public class IntegrationTesting {
 
-    //Examole PRAndroidLogin Test
-    //PRAndroidLogin test = new PRAndroidLogin();
+
     @Before
     public void setUp() throws Exception {
-        //test.setUp();
+
     }
 
     @After
     public void tearDown() {
-        //test.tearDown();
+
     }
 
     @Test
     public void test() throws Exception {
+        PRWebLogin login = new PRWebLogin();
+        login.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
 
-        //test.logIn("https://ranch.***REMOVED***", "***REMOVED***", "***REMOVED***");
+        //new PRWebAddAnimal(login.getDriver()).addAnimalTransfer("2023-05-28", "This is a Test", "Steer", "Wagyu");
+
+        /**
+         * Empty Strings = herd , pasture , birthPasture
+         */
+        new PRWebAddAnimal(login.getDriver()).addCalf("2023-05-28", "Testing 00001", "", "BRANDTATTOO", "",
+                "Bull", "", "", "", "", "testbull",
+                "OnlyVidDam", "5", "Wagyu", "WHITE", "Horned",
+                "1000kg", "", "Dam only", "Assisted, Easy", "Checking ah ah ah");
+
+        login.tearDown();
     }
 }
