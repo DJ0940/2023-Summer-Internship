@@ -59,10 +59,5 @@ public class PBiOSLogout {
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Login")));
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ie) {
-        }
     }
 }
