@@ -52,6 +52,4 @@ public class PRAndroidLogout {
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.id("com.perfomancebeef.android:id/login_btn")));
     }
-
-
 }
