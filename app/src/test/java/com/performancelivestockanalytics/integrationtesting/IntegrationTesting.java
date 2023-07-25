@@ -8,13 +8,11 @@ import org.openqa.selenium.WebDriver;
 public class IntegrationTesting {
 
     @Before
-    public void setUp() {
-
+    public void setUp() throws Exception {
     }
 
     @After
     public void tearDown() {
-
     }
 
     @Test
