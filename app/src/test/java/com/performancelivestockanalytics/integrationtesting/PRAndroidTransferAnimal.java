@@ -152,11 +152,5 @@ public class PRAndroidTransferAnimal {
 
         // If the message says anything else the transfer has failed and the test throws an exception.
         throw new Exception("Failed to transfer animal");
-
-
-
-
-
-
     }
 }
