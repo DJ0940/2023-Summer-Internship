@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.Map;
 
 public class PRWebAddAnimal {
     private static final int TIMEWAIT = 3; // Normal timeout waiting for components
@@ -29,24 +30,24 @@ public class PRWebAddAnimal {
      * Add an animal with minimum requirements for it to be transferred to Performance Beef
      * Role is fixed to Calf
      *
-     * @param birthDate  (year-month-date)
-     * @param visualID   (animal name)
-     * @param gender     (Steer Bull Heifer)
-     * @param breed      (Just one breed as 100%)
+     * @param fields - Hash map that holds all the necessary parameters for transferring an animal
      */
 
-    public void addAnimalTransfer(String birthDate, String visualID,  String gender, String breed) {
+    public void addAnimalTransfer(Map<String, String> fields) {
+        // Since the add animal button may not be displayed in current page, navigate to the overview page
+        new PRWebNavigate(driver).navigateToOverview();
+
         // Click Add animal button
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='addAnimalButton']")))).click();
 
         // Set Birthdate
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(birthDate);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(fields.get("birthDate"));
 
         // Set Visual ID
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(visualID);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(fields.get("visualID"));
 
         // Set Gender
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys(gender);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys(fields.get("gender"));
 
         // Click Breed - edit button
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("setBreed")))).click();
@@ -59,7 +60,7 @@ public class PRWebAddAnimal {
         List<WebElement> tempBreed = driver.findElements(By.cssSelector("div.bs-searchbox > input.form-control[aria-label=\"Search\"]"));
         for (WebElement el : tempBreed) {
             if (el.getAttribute("aria-label").equals("Search")) {
-                el.sendKeys(breed);
+                el.sendKeys(fields.get("breed"));
                 el.sendKeys(Keys.ENTER);
 
                 // This click is to close the edit breed list box
@@ -71,7 +72,7 @@ public class PRWebAddAnimal {
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("div.row.padding-x-xs > button.btn.btn-success.padding-y-lg")))).click();
 
         // Add notes , Send keys
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("animal-notes")))).sendKeys("Added from Web-Selenium");
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("animal-notes")))).sendKeys("Checking Transfer to Beef");
 
         // Click Add Animal
         driver.findElement(By.id("addAnimalButton")).click();
@@ -81,10 +82,19 @@ public class PRWebAddAnimal {
         driver.navigate().refresh();
     }
 
-
-    public void addCalf(String birthDate, String visualID, String eID, String brandTattoo, String vigor, String gender, String origin,
+/*String birthDate, String visualID, String eID, String brandTattoo, String vigor, String gender, String origin,
                         String purchaseDate, String herd, String pasture, String sireID, String damID, String damBcsBirth, String breed, String color,
-                        String hornedStatus, String birthWeight, String birthPasture, String managementCode, String calvingEase, String notes) {
+                        String hornedStatus, String birthWeight, String birthPasture, String managementCode, String calvingEase, String notes */
+
+
+    /**
+     * Need to fix the .sendkeys(), after the json file is implemented, change the code like this 'fields.get("visualID")' etc
+     * @param fields - Hash map that holds all the input parameters
+     */
+    public void addCalf(Map<String, String> fields) {
+
+        // Since the add animal button may not be displayed in current page, navigate to the overview page
+        new PRWebNavigate(driver).navigateToOverview();
 
         /**
          * The Sire ID and Dam ID lists doesn't show up without refreshing the page after logging in
@@ -98,54 +108,54 @@ public class PRWebAddAnimal {
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("select.form-control#roleSelector option[value='calf']")))).click();
 
         // Set Birthdate
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(birthDate);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(fields.get("birthDate"));
 
         // Set Visual ID
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(visualID);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(fields.get("visualID"));
 
         // Set EID
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_tag_id']")))).sendKeys(eID);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_tag_id']")))).sendKeys(fields.get("eID"));
 
         // Set Brand/Tattoo
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='brand']")))).sendKeys(brandTattoo);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='brand']")))).sendKeys(fields.get("brandTattoo"));
 
         // Set Vigor
         /* The vigor is selected by sending the exact string value listed in the dropdown or by keyboards. But using keyboards may result in incorrect
            output when the list gets changed.
            */
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_vigor']")))).sendKeys(vigor);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_vigor']")))).sendKeys(fields.get("vigor"));
 
         // Set Gender - applies same thing as Vigor
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys(gender);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys(fields.get("gender"));
 
         // Set Origin
         // If the origin is purchased, purchase date tab appears
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='origin']")))).sendKeys(origin);
-        if (origin.equals("Purchased")) {
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='origin']")))).sendKeys(fields.get("origin"));
+        if (fields.get("origin").equals("Purchased")) {
             // Set Purchase Date
-            checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='purchase_date']")))).sendKeys(purchaseDate);
+            checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='purchase_date']")))).sendKeys(fields.get("purchaseDate"));
         }
 
         // Set Herd
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='herd_id']")))).sendKeys(herd);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='herd_id']")))).sendKeys(fields.get("herd"));
 
         // Set Pasture
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='pasture_id']")))).sendKeys(pasture);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='pasture_id']")))).sendKeys(fields.get("pasture"));
 
         // Set Sire ID
         /* Since we search for the Sire ID passed in as a param, no need to search for it
            Also, searching an empty string still shows the unfiltered list so only search when it is not empty
            */
-        if (!sireID.isEmpty()) {
+        if (!fields.get("sireID").isEmpty()) {
             driver.findElement(By.id("setSire")).click();
-            checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='searchBox']")))).sendKeys(sireID);
+            checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='searchBox']")))).sendKeys(fields.get("sireID"));
             checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("sire-row-pair")))).click();
 
             /* When the search Sire is clicked, the set Sire button's text changes from "Set as Sire to" to "Set (sireID) as Sire to"
                The assert will pass if the Sire ID has been successfully searched and clicked
                */
             WebElement setSire = driver.findElement(By.id("modal-select-button-sire"));
-            assert(setSire.getText().trim().equals("Set " + sireID + " as Sire to"));
+            assert(setSire.getText().trim().equals("Set " + fields.get("sireID") + " as Sire to"));
             setSire.click();
         }
 
@@ -153,7 +163,7 @@ public class PRWebAddAnimal {
         /* Since we search for the Dam ID passed in as a param, no need to search for it
            Also, searching an empty string still shows the unfiltered list so only search when it is not empty
            */
-        if (!damID.isEmpty()) {
+        if (!fields.get("damID").isEmpty()) {
             driver.findElement(By.id("setDam")).click();
 
             // The html is same with Sire search bar so accessing the element through the parent
@@ -163,7 +173,7 @@ public class PRWebAddAnimal {
                                     .findElement(By.className("modal-body"))
                                             .findElement(By.className("modal-header"))
                                                     .findElement(By.className("search-form"))
-                                                            .findElement(By.cssSelector("[aria-label='Search']")).sendKeys(damID);
+                                                            .findElement(By.cssSelector("[aria-label='Search']")).sendKeys(fields.get("damID"));
 
             checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("dam-row-pair")))).click();
 
@@ -174,7 +184,7 @@ public class PRWebAddAnimal {
             List<WebElement> dam = driver.findElements(By.id("modal-select-button"));
             for (WebElement el : dam) {
                 if (el.getText().contains("Dam")) {
-                    assert(el.getText().trim().equals("Set " + damID + " as Dam to"));
+                    assert(el.getText().trim().equals("Set " + fields.get("damID") + " as Dam to"));
                     el.click();
                     break;
                 }
@@ -182,7 +192,7 @@ public class PRWebAddAnimal {
         }
 
         // Set Dam BCS at Birth
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='dam_body_condition']")))).sendKeys(damBcsBirth);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='dam_body_condition']")))).sendKeys(fields.get("damBcsBirth"));
 
         // Set Breed
         /* Search for Breed(param)
@@ -193,7 +203,7 @@ public class PRWebAddAnimal {
         List<WebElement> tempBreed = driver.findElements(By.cssSelector("div.bs-searchbox > input.form-control[aria-label=\"Search\"]"));
         for (WebElement el : tempBreed) {
             if (el.getAttribute("aria-label").equals("Search")) {
-                el.sendKeys(breed);
+                el.sendKeys(fields.get("breed"));
                 el.sendKeys(Keys.ENTER);
 
                 // This click is to close the edit breed list box
@@ -202,28 +212,28 @@ public class PRWebAddAnimal {
         }
 
         // Set Color
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='coat_color']")))).sendKeys(color);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='coat_color']")))).sendKeys(fields.get("color"));
 
         // Set Horned Status
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='horned_status']")))).sendKeys(hornedStatus);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='horned_status']")))).sendKeys(fields.get("hornedStatus"));
 
         // Set Birth Weight
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_weight']")))).sendKeys(birthWeight);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_weight']")))).sendKeys(fields.get("birthWeight"));
 
         // Set Birth Pasture
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_pasture_id']")))).sendKeys(birthPasture);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_pasture_id']")))).sendKeys(fields.get("birthPasture"));
 
         // Set Management Code
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='management_code']")))).sendKeys(managementCode);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='management_code']")))).sendKeys(fields.get("managementCode"));
 
         // Set Calving Ease
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_assistance']")))).sendKeys(calvingEase);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_assistance']")))).sendKeys(fields.get("calvingEase"));
 
         // Click Save, calling by className("btn-success") clicks something else
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("div.row.padding-x-xs > button.btn.btn-success.padding-y-lg")))).click();
 
         // Add notes , Send keys
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("animal-notes")))).sendKeys(notes);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("animal-notes")))).sendKeys(fields.get("notes"));
 
         // Click Add Animal
         driver.findElement(By.id("addAnimalButton")).click();
