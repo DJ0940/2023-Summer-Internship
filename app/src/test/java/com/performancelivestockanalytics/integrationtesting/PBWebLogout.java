@@ -9,31 +9,30 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class PBWebNavigate {
-    private static final int TIMEWAIT = 3;
-    private WebDriverWait wait;
+public class PBWebLogout {
+    private static final int TIMEWAIT = 3; // Normal timeout waiting for components
     private WebDriver driver;
+    WebDriverWait wait;
 
-    PBWebNavigate(WebDriver driver) {
+    PBWebLogout (WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
 
-    public void navigateToOverview() {
-        // Refresh the page to remove any pop-up so that navigation bar is visible
+    public void logOut() {
+        // We need to remove any pop-ups, so by refreshing the page it will remove them and the account setting button will be visible
         driver.navigate().refresh();
 
-        /* If refresh was successful, the navigation bar should be visible on the left or right (depending on the window size)
-           Click it to navigate to overview page
+        // After removing any pop-ups, navigate the user to the account setting where the log out button is located
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("account-settings-glyphicon")))).click();
+
+        // Wait for the account setting page to load, then click the log out button
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("account_change")))).click();
+
+        /* Now confirm the logout. If successful, the assert will pass.
+           Determine the success by the existence of username box in login page
            */
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.className("nav-overview")))).click();
-
-
-        /* Now confirm the navigation to overview. If successful, the assert will pass.
-           Determine the success by the existence of animals(pull-right class)
-           */
-        assert(wait.until(visibilityOfElementLocated(By.className("pull-right"))).isDisplayed());
-
+        assert(checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("user")))).isDisplayed());
     }
 
     private WebElement checkVisibilityOrScroll(WebElement element) {
