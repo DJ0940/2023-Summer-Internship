@@ -11,14 +11,13 @@ import java.net.URL;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class  PRAndroidLogin implements LoginInterface {
+public class  PRAndroidLogin implements LoginInterface, Constants {
     private AndroidDriver driver;
 
     /* The setUp method creates the driver that appium uses.
-       The capabilities can be changed depending on the attributes of your
+       The capabilities can be changed depending on the attributes of the desired
        emulator. The emulator that this test is using is a Pixel_3a_API_33_arm64-v8a|
-       running on Android 13.0. Changing the capabilities is quite intuitive, just change
-       the second parameter to the desired attribute of your emulator.
+       running on Android 13.0.
     */
     @Override
     public void setUp() throws MalformedURLException {
@@ -32,10 +31,7 @@ public class  PRAndroidLogin implements LoginInterface {
 
         // TODO: Abstract this out to a JSON file.
         caps.setCapability("app", "/Users/logan/pb-android/app/build/intermediates/apk/debug/app-debug.apk");
-
-        //  The driver is set with the
-        // Inorder to run the test make
-        // into your systems terminal.
+        
         driver = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), caps);
     }
 
@@ -57,7 +53,7 @@ public class  PRAndroidLogin implements LoginInterface {
            wait while a new screen is loading then an error will be thrown because the driver can't
            instantly find the desired element.
         */
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
 
         /* The driver needs to click on the PR Logo 11 times in quick succession in order to change

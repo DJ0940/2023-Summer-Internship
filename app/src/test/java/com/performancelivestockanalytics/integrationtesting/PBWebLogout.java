@@ -9,8 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class PBWebLogout {
-    private static final int TIMEWAIT = 3; // Normal timeout waiting for components
+public class PBWebLogout implements Constants {
+
     private WebDriver driver;
     WebDriverWait wait;
 
