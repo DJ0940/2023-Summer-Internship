@@ -31,7 +31,7 @@ public class  PRAndroidLogin implements LoginInterface, Constants {
 
         // TODO: Abstract this out to a JSON file.
         caps.setCapability("app", "/Users/logan/pb-android/app/build/intermediates/apk/debug/app-debug.apk");
-        
+
         driver = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), caps);
     }
 
