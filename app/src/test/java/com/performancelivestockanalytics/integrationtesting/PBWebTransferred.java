@@ -11,8 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class PBWebTransferred {
-    private static final int TIMEWAIT = 3; // Normal timeout waiting for components
+public class PBWebTransferred implements Constants {
     private WebDriver driver;
     WebDriverWait wait;
 
