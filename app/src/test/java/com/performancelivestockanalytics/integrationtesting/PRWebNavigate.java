@@ -9,8 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class PRWebNavigate {
-    private static final int TIMEWAIT = 3;
+public class PRWebNavigate implements Constants{
     private WebDriverWait wait;
     private WebDriver driver;
 

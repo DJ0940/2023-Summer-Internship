@@ -8,7 +8,7 @@ import java.util.HashMap;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSLogout {
+public class PBiOSLogout implements Constants{
     IOSDriver driver;
 
 
@@ -20,7 +20,7 @@ public class PBiOSLogout {
     public void logout(){
 
         // Maximum time the driver is allowed to search for an element.
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         // Because the test could be anywhere in the app the driver navigates
         //  back to the dashboard for consistent testing.

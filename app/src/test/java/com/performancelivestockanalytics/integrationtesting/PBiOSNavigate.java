@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSNavigate {
+public class PBiOSNavigate implements Constants {
     IOSDriver driver;
+    private static final int SYNCWAIT = 20;
 
     /* To setup this driver go to the setUp method IntegrationTesting.
        Then use the last class' getDriver method to set that driver as the driver
@@ -25,8 +26,8 @@ public class PBiOSNavigate {
            after logging in.
         */
 
-        WebDriverWait wait = new WebDriverWait(driver, 3);
-        WebDriverWait syncwait = new WebDriverWait(driver, 20);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
+        WebDriverWait syncwait = new WebDriverWait(driver, SYNCWAIT);
 
         // Check to see if the driver is already at the overview.
         // If they are the test will end in a success.
