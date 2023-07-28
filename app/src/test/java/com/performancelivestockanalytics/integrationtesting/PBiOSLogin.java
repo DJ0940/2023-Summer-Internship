@@ -12,16 +12,15 @@ import java.util.HashMap;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSLogin implements LoginInterface {
+public class PBiOSLogin implements LoginInterface, Constants {
     private IOSDriver driver;
 
     @Override
     public void setUp() throws Exception{
         /* The setUp method creates the driver that appium uses.
-           The capabilities can be changed depending on the attributes of your
+           The capabilities can be changed depending on the attributes of the desired
            emulator. The emulator that this test is using is an iPhone SE (3rd generation)
-           running on iOS 16.4. Changing the capabilities is quite intuitive, just change
-           the second parameter to the desired attribute of your emulator.
+           running on iOS 16.4.
          */
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("platformName", "iOS");
@@ -36,9 +35,6 @@ public class PBiOSLogin implements LoginInterface {
         // The XCUITest is used because that is the automator for iOS.
         caps.setCapability("automationName", "XCUITest");
 
-        // The driver is set with the desired capabilities and the Appium url.
-        // Inorder to run the test make sure to run the command appium --base-path /wd/hub
-        // into your systems terminal.
         driver = new IOSDriver(new URL("http://localhost:4723/wd/hub"), caps);
     }
 
@@ -50,7 +46,6 @@ public class PBiOSLogin implements LoginInterface {
         }
     }
 
-    // IMPORTANT: You still have to manual click on the bluetooth devices button.
     @Override
     public void login(String targetServer, String user, String pass) throws Exception {
 
@@ -61,7 +56,7 @@ public class PBiOSLogin implements LoginInterface {
            wait while a new screen is loading then an error will be thrown because the driver can't
            instantly find the desired element.
         */
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         /* Because the app is just loading in the driver waits for the settings button to load in the
            top left corner of the screen. Appium inspector presents the preferred handle

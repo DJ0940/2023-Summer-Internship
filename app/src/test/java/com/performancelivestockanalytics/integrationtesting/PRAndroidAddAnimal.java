@@ -10,7 +10,7 @@ import java.util.List;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class PRAndroidAddAnimal {
+public class PRAndroidAddAnimal implements Constants {
     private AndroidDriver driver;
 
     public void setUp(AndroidDriver d){
@@ -20,7 +20,7 @@ public class PRAndroidAddAnimal {
     public void addAnimal() throws Exception {
 
         // Maximum time the driver is allowed to find an element
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         // Since the test could be anywhere in the app we head back to
         // the animal overview to guarantee the driver can get to the add animal screen.
