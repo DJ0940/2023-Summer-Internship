@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class PRAndroidNavigate {
+public class PRAndroidNavigate implements Constants {
 
     private AndroidDriver driver;
 
@@ -27,7 +27,7 @@ public class PRAndroidNavigate {
 
     public void navigateToOverview() {
         // Same as the PRAndroidLogin, the driver is allowed to wait up to three seconds to find an element.
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         //Checks to see if the driver is already on the home page. If they are then the test will return
         // a success.

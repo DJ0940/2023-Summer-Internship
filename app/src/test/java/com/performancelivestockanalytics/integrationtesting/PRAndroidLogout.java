@@ -7,7 +7,7 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
 
-public class PRAndroidLogout {
+public class PRAndroidLogout implements Constants {
 
     AndroidDriver driver;
 
@@ -19,7 +19,7 @@ public class PRAndroidLogout {
     public void logout() throws Exception {
 
         // Maximum time the driver is allowed to search for an element.
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         // Because the test could be anywhere in the app the driver navigates
         //  back to the dashboard for consistent testing.
