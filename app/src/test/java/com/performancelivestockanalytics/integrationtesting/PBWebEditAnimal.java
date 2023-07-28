@@ -13,8 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.Objects;
 
-public class PBWebEditAnimal {
-    private static final int TIMEWAIT = 3;
+public class PBWebEditAnimal implements Constants{
     private WebDriverWait wait;
     private WebDriver driver;
 
