@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class PRWebLogin implements LoginInterface{
+public class PRWebLogin implements LoginInterface, Constants{
 
     private WebDriverWait wait;
     private WebDriver driver;

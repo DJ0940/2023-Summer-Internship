@@ -10,7 +10,7 @@ import java.util.List;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 
-public class PRAndroidTransferAnimal {
+public class PRAndroidTransferAnimal implements Constants {
 
     private AndroidDriver driver;
 
@@ -21,7 +21,7 @@ public class PRAndroidTransferAnimal {
 
     public void transferAnimal() throws Exception {
 
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         // Since the test could be anywhere in the app we head back to
         // the animal overview to guarantee the driver can get to the add animal screen.
