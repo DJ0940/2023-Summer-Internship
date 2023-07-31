@@ -26,13 +26,14 @@ public class PRWebAddAnimal {
         wait = new WebDriverWait(driver, TIMEWAIT);
     }
 
+
     /**
      * Add an animal with minimum requirements for it to be transferred to Performance Beef
      * Role is fixed to Calf
      *
      * @param fields - Hash map that holds all the necessary parameters for transferring an animal
+     * // String birthDate, String visualID, String gender, String breed //
      */
-
     public void addAnimalTransfer(Map<String, String> fields) {
         // Since the add animal button may not be displayed in current page, navigate to the overview page
         new PRWebNavigate(driver).navigateToOverview();
@@ -82,14 +83,55 @@ public class PRWebAddAnimal {
         driver.navigate().refresh();
     }
 
-/*String birthDate, String visualID, String eID, String brandTattoo, String vigor, String gender, String origin,
-                        String purchaseDate, String herd, String pasture, String sireID, String damID, String damBcsBirth, String breed, String color,
-                        String hornedStatus, String birthWeight, String birthPasture, String managementCode, String calvingEase, String notes */
+    public void addEmptyCalf(String birthDate, String visualID) {
+
+        // Since the add animal button may not be displayed in current page, navigate to the overview page
+        new PRWebNavigate(driver).navigateToOverview();
+
+        // Click Add animal button
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='addAnimalButton']")))).click();
+
+        // Set Role to Calf
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("select.form-control#roleSelector option[value='calf']")))).click();
+
+        // Set Birthdate
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(birthDate);
+
+        // Set Visual ID
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(visualID);
+
+        // Click Add Animal
+        driver.findElement(By.id("addAnimalButton")).click();
+
+        /* Wait for the add animal page to be disappeared if the animal was added successfully. Because it may fail the test due to the delay*/
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        /**
+         * At this point, we need to check if the animal was actually added (Incorrect Birthdate will give an error)
+         * Here we look for the add animal button we just clicked and if that is still visible, we make the test fail. Else, test succeed
+         */
+        try {
+            driver.findElement(By.id("addAnimalButton")).click();
+            Assert.fail("Animal not added successfully");
+        } catch(ElementNotInteractableException ene) {
+            // Animal Added Successfully
+        }
+    }
+
+
 
 
     /**
      * Need to fix the .sendkeys(), after the json file is implemented, change the code like this 'fields.get("visualID")' etc
      * @param fields - Hash map that holds all the input parameters
+     * //    String birthDate, String visualID, String eID, String brandTattoo, String vigor, String gender, String origin,                  //
+     * //    String purchaseDate, String herd, String pasture, String sireID, String damID, String damBcsBirth, String breed, String color,  //
+     * //    String hornedStatus, String birthWeight, String birthPasture, String managementCode, String calvingEase, String notes           //
+     *
      */
     public void addCalf(Map<String, String> fields) {
 
