@@ -137,6 +137,21 @@ public class PBWebEditAnimal implements Constants{
         }
     }
 
+    /**
+     * Deleting an animal inside the targetGroup
+     * @param tagID - to delete
+     * @param targetGroup - where tagID is located
+     */
+    public void deleteAnimal(String tagID, String targetGroup) {
+        navigateToHealthGroup(targetGroup);
+        navigateToEditAnimal(tagID);
+
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-target='#deleteAnimalModal']")))).click();
+
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-link='{on ~root.removeAnimal}']")))).click();
+    }
+
+
     public void navigateToHealthGroup(String targetGroup) {
         // We need to remove any pop-ups, so by refreshing the page it will remove them
         driver.navigate().refresh();

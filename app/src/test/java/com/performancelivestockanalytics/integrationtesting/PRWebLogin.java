@@ -9,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -29,8 +30,14 @@ public class PRWebLogin implements LoginInterface, Constants{
            can be both used in mac + window environment. Also setting the driver to small
            window size inorder to test all cases that users may experience.
            */
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        //WebDriverManager.chromedriver().setup();
+
+        /* Currently 2023-08-01 there are some issues with setting up the chromedriver
+           So below ChromeOptions is a workaround for Selenium
+           */
+        ChromeOptions options = new ChromeOptions();
+        options.setBinary("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
+        driver = new ChromeDriver(options);
         driver.manage().window().setSize(new Dimension(500, 600));
 
         // Use this WebDriverWait to make sure the driver is not trying to access an element that
