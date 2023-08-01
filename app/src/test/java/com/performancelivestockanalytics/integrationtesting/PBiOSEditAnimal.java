@@ -43,7 +43,6 @@ public class PBiOSEditAnimal implements Constants {
 
     After this go back to xcode and go to product > run and make sure the app builds and runs.
   */
-
     IOSDriver driver;
 
     WebDriverWait wait;
@@ -56,81 +55,116 @@ public class PBiOSEditAnimal implements Constants {
     private void navigateToHealth() {
 
         PBiOSNavigate nav = new PBiOSNavigate();
+
+        // First the driver must be set up.
+        // The driver should come from PBiOSLogin
         nav.setUp(driver);
+
+        // Next the driver navigates over to the feedyard webview.
         nav.navigateToOverview();
 
-        // scrolls over to the health section
+        // scrolls over to the health section.
         scroll();
 
+        //Click on the health button.
         driver.findElementByAccessibilityId("Health").click();
     }
 
-    private void navigateToAnimal() throws InterruptedException {
+    private void navigateToAnimal(String animalName) throws InterruptedException {
 
+        // Switch the context to a webview.
         driver.context(getWebContext());
 
+        // The driver then finds correct group.
         List<WebElement> elements = driver.findElements(By.tagName("h2"));
         WebElement group = null;
         for (WebElement childElement: elements){
-            if (Objects.equals(childElement.getText(), "Group01")){;
+            if (Objects.equals(childElement.getText(), "Group1")){;
                 group = childElement;
             }
         }
 
+        // Now the driver scrolls to the desired group and clicks it.
+        // The driver can use this selenium style scrolling because it is in a webview context.
        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", group);
         group.click();
 
+        // The driver waits for the presence of the Edit Group button to appear to make sure
+        // its on the correct page.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.cssSelector("#page-container > div.page-content.container-fluid.font-black.bg-white > div > div:nth-child(2) > div.col-md-8 > div:nth-child(1) > button")));
+                        MobileBy.cssSelector("#page-container > div.page-content.container-fluid." +
+                                "font-black.bg-white > div > div:nth-child(2) > div.col-md-8 > div:nth-child(1) > button")));
 
+        // The driver then finds the textbox that looks up an animal and loads it into a variable.
         WebElement textbox = driver.findElement(By.cssSelector("#DataTables_Table_0_filter > label > input"));
+
+        // Next the driver scrolls to the textbox.
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textbox);
 
-        textbox.sendKeys("AppiumCalf");
+        // Type in the desired animals name.
+        textbox.sendKeys(animalName);
+
+        // The only animal that should appear is the desired animal so the driver clicks it.
         driver.findElement(By.cssSelector("#animal_table_body > tr > td.dtr-control.sorting_1")).click();
 
+        // The webview is no longer necessary so the driver can switch back to the native app view.
         driver.context("NATIVE_APP");
+
+        // The driver waits for the edit button to appear and then clicks it.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Edit"))).click();
     }
 
-    public void changeAnimalGender() throws InterruptedException {
-        navigateToHealth();
-        navigateToAnimal();
+    public void changeAnimalGender(String animalName) throws InterruptedException {
 
+        // First the driver navigates to the health section.
+        navigateToHealth();
+
+        // Then the driver navigates to the screen where it can edit the animal.
+        navigateToAnimal(animalName);
+
+        // To confirm the driver is on the correct screen it looks for the save changes button
+        // and stores it into a variable for later.
         WebElement saveBtn =  wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Save Changes")));
 
+        // The driver scrolls to where it can edit the animals gender.
         scroll();
 
-        driver.findElement(MobileBy.xpath("//XCUIElementTypeOther[@name=\"Performance Beef\"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[15]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther")).click();
+        // Driver clicks on the gender drop down menu.
+        driver.findElement(MobileBy.xpath("//XCUIElementTypeOther[@name=\"" +
+                "Performance Beef\"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[15]/XCUI" +
+                "ElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther")).click();
 
+        // Next the gender is changed to Steer.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Steer"))).click();
 
+        // Finally the changes are saved.
         saveBtn.click();
-
-        Thread.sleep(3000);
     }
-
 
     private String getWebContext() throws InterruptedException {
 
+        // The strategy of implicit wait does not work so the driver is forced to
+        // wait three seconds for the webview to load.
         Thread.sleep(3000);
+
+        // A list of all contexts is created.
         ArrayList<String> contexts = new ArrayList(driver.getContextHandles());
         for (String context : contexts) {
             if (!context.equals("NATIVE_APP")) {
+                // If a context that is found that isn't the native app then
+                // the method returns that context.
                 return context;
             }
         }
-
-        getWebContext();
+        // Returns null when no other contexts are found.
         return null;
-
     }
 
         private void scroll(){
@@ -150,5 +184,7 @@ public class PBiOSEditAnimal implements Constants {
             this.driver.perform(Arrays.asList(swipe));
         }
 
-
+    public IOSDriver getDriver(){
+        return driver;
+    }
 }

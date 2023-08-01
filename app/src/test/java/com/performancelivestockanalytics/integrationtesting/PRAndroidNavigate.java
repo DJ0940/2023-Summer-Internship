@@ -29,12 +29,12 @@ public class PRAndroidNavigate implements Constants {
         // Same as the PRAndroidLogin, the driver is allowed to wait up to three seconds to find an element.
         WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
-        //Checks to see if the driver is already on the home page. If they are then the test will return
+        // Checks to see if the driver is already on the overview page. If they are then the test will return
         // a success.
         try {
-            driver.findElementByAccessibilityId("Active");
+            driver.findElementById("com.perfomancebeef.android:id/nav_home");
             return;
-        } catch (NoSuchElementException nse){
+        } catch (NoSuchElementException nse) {
         }
 
         // Checks to see if the left facing return arrow is present. If it is then click it.
@@ -60,21 +60,17 @@ public class PRAndroidNavigate implements Constants {
         } catch (NoSuchElementException nse) {
         }
 
-        //Find the "Hamburger Icon" and click it.
+        // Find the "Hamburger Icon" and click it.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Open navigation drawer"))).click();
 
-        //The driver finds the Animal Overview button and clicks it.
+        // The driver waits for the presence of the Animal Overview button to confirm
+        // that the driver is in the correct area.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.id("com.perfomancebeef.android:id/nav_home"))).click();
+                        MobileBy.id("com.perfomancebeef.android:id/nav_home")));
 
-        // Confirm the driver has made it back to the home screen by finding the
-        // label that has the text "Active."
-        wait.until(
-                ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.AccessibilityId("Active")));
     }
 }
 
