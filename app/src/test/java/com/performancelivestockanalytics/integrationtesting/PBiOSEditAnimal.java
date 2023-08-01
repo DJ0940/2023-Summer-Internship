@@ -72,7 +72,7 @@ public class PBiOSEditAnimal implements Constants {
         List<WebElement> elements = driver.findElements(By.tagName("h2"));
         WebElement group = null;
         for (WebElement childElement: elements){
-            if (Objects.equals(childElement.getText(), "Rock Valley 9")){;
+            if (Objects.equals(childElement.getText(), "Group01")){;
                 group = childElement;
             }
         }
@@ -87,7 +87,7 @@ public class PBiOSEditAnimal implements Constants {
         WebElement textbox = driver.findElement(By.cssSelector("#DataTables_Table_0_filter > label > input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textbox);
 
-        textbox.sendKeys("BigBull\n");
+        textbox.sendKeys("AppiumCalf");
         driver.findElement(By.cssSelector("#animal_table_body > tr > td.dtr-control.sorting_1")).click();
 
         driver.context("NATIVE_APP");
@@ -100,15 +100,20 @@ public class PBiOSEditAnimal implements Constants {
         navigateToHealth();
         navigateToAnimal();
 
-        wait.until(
+        WebElement saveBtn =  wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.AccessibilityId("Pull Status")));
+                        MobileBy.AccessibilityId("Save Changes")));
 
         scroll();
 
         driver.findElement(MobileBy.xpath("//XCUIElementTypeOther[@name=\"Performance Beef\"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[15]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther")).click();
 
-        List<WebElement> elements = driver.findElements(By.tagName(""));
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.AccessibilityId("Steer"))).click();
+
+        saveBtn.click();
+
         Thread.sleep(3000);
     }
 
