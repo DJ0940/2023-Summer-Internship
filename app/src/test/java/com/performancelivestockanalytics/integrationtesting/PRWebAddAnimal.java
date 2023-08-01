@@ -30,11 +30,11 @@ public class PRWebAddAnimal {
     /**
      * Add an animal with minimum requirements for it to be transferred to Performance Beef
      * Role is fixed to Calf
+     * 
      *
-     * @param fields - Hash map that holds all the necessary parameters for transferring an animal
      * // String birthDate, String visualID, String gender, String breed //
      */
-    public void addAnimalTransfer(Map<String, String> fields) {
+    public void addAnimalTransfer(String visualID) {
         // Since the add animal button may not be displayed in current page, navigate to the overview page
         new PRWebNavigate(driver).navigateToOverview();
 
@@ -42,13 +42,13 @@ public class PRWebAddAnimal {
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='addAnimalButton']")))).click();
 
         // Set Birthdate
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(fields.get("birthDate"));
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys("2022-06-15");
 
         // Set Visual ID
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(fields.get("visualID"));
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(visualID);
 
         // Set Gender
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys(fields.get("gender"));
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='gender']")))).sendKeys("Steer");
 
         // Click Breed - edit button
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("setBreed")))).click();
@@ -61,7 +61,7 @@ public class PRWebAddAnimal {
         List<WebElement> tempBreed = driver.findElements(By.cssSelector("div.bs-searchbox > input.form-control[aria-label=\"Search\"]"));
         for (WebElement el : tempBreed) {
             if (el.getAttribute("aria-label").equals("Search")) {
-                el.sendKeys(fields.get("breed"));
+                el.sendKeys("Wagyu");
                 el.sendKeys(Keys.ENTER);
 
                 // This click is to close the edit breed list box
@@ -83,7 +83,7 @@ public class PRWebAddAnimal {
         driver.navigate().refresh();
     }
 
-    public void addEmptyCalf(String birthDate, String visualID) {
+    public void addEmptyCalf(String visualID) {
 
         // Since the add animal button may not be displayed in current page, navigate to the overview page
         new PRWebNavigate(driver).navigateToOverview();
@@ -95,7 +95,7 @@ public class PRWebAddAnimal {
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("select.form-control#roleSelector option[value='calf']")))).click();
 
         // Set Birthdate
-        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys(birthDate);
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='birth_date']")))).sendKeys("2022-06-15");
 
         // Set Visual ID
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-el='primary_visual_id']")))).sendKeys(visualID);
