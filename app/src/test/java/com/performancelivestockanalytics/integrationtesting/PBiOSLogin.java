@@ -2,26 +2,30 @@ package com.performancelivestockanalytics.integrationtesting;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Interaction;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSLogin implements LoginInterface {
+public class PBiOSLogin implements LoginInterface, Constants {
     private IOSDriver driver;
 
     @Override
     public void setUp() throws Exception{
         /* The setUp method creates the driver that appium uses.
-           The capabilities can be changed depending on the attributes of your
+           The capabilities can be changed depending on the attributes of the desired
            emulator. The emulator that this test is using is an iPhone SE (3rd generation)
-           running on iOS 16.4. Changing the capabilities is quite intuitive, just change
-           the second parameter to the desired attribute of your emulator.
+           running on iOS 16.4.
          */
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("platformName", "iOS");
@@ -36,9 +40,6 @@ public class PBiOSLogin implements LoginInterface {
         // The XCUITest is used because that is the automator for iOS.
         caps.setCapability("automationName", "XCUITest");
 
-        // The driver is set with the desired capabilities and the Appium url.
-        // Inorder to run the test make sure to run the command appium --base-path /wd/hub
-        // into your systems terminal.
         driver = new IOSDriver(new URL("http://localhost:4723/wd/hub"), caps);
     }
 
@@ -50,7 +51,6 @@ public class PBiOSLogin implements LoginInterface {
         }
     }
 
-    // IMPORTANT: You still have to manual click on the bluetooth devices button.
     @Override
     public void login(String targetServer, String user, String pass) throws Exception {
 
@@ -61,7 +61,7 @@ public class PBiOSLogin implements LoginInterface {
            wait while a new screen is loading then an error will be thrown because the driver can't
            instantly find the desired element.
         */
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
         /* Because the app is just loading in the driver waits for the settings button to load in the
            top left corner of the screen. Appium inspector presents the preferred handle
@@ -76,14 +76,14 @@ public class PBiOSLogin implements LoginInterface {
         // After finding the settings button the driver clicks it.
         settings.click();
 
-        // Lines 82-87 allow Appium to scroll to the Bluetooth Devices bar.
         // TODO: Resurrect a way to automate multitap.
-        HashMap<String,Object>scrollObject = new HashMap<>();
 
-        scrollObject.put("direction","down");
-        scrollObject.put("name", "Bluetooth Devices");
+        // Scroll to the bottom of settings.
+        scroll();
 
-        driver.executeScript("mobile:scroll", scrollObject);
+        // This only works if the the server has already been changed once.
+        // TODO: Replace this with the multitap on the bluetooth devices.
+        driver.findElement(MobileBy.AccessibilityId("Set Server Host")).click();
 
         // Now that the test is on the screen that allows the user to change the target server
         // the driver waits for the Dev Box to load in and click it.
@@ -191,6 +191,23 @@ public class PBiOSLogin implements LoginInterface {
 
         throw new Exception("Failed to login");
 
+    }
+
+    private void scroll(){
+        // Setting up all of the interactions.
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Interaction moveToStart = finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 186, 519);
+        Interaction pressDown = finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg());
+        Interaction moveToEnd = finger.createPointerMove(Duration.ofMillis(400L), PointerInput.Origin.viewport(), 186, 75);
+        Interaction pressUp = finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg());
+        Sequence swipe = new Sequence(finger, 0);
+
+        // Executing the actions.
+        swipe.addAction(moveToStart);
+        swipe.addAction(pressDown);
+        swipe.addAction(moveToEnd);
+        swipe.addAction(pressUp);
+        this.driver.perform(Arrays.asList(swipe));
     }
 
     // This method returns the driver that is being used to run this test.

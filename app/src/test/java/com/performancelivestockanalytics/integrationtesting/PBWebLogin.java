@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class PBWebLogin implements LoginInterface{
+public class PBWebLogin implements LoginInterface, Constants{
     private WebDriverWait wait;
     private WebDriver driver;
 

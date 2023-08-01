@@ -25,6 +25,6 @@ public class test {
         // Master branch leaves this empty for now -PG
 
         in.login("beta\n", "***REMOVED***", "***REMOVED***");
-        edit.changeWeight(50);
+        edit.changeAnimalGender();
     }
 }

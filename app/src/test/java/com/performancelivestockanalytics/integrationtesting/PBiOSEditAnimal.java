@@ -1,21 +1,27 @@
 package com.performancelivestockanalytics.integrationtesting;
 
+import android.opengl.Visibility;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Interaction;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSDriver;
 
-public class PBiOSEditAnimal {
+public class PBiOSEditAnimal implements Constants {
 
     /* IMPORTANT: There are issues that will arise with trying to inspect the webview
     without following these steps. Open up pb-ios in xcode. Next go to the left column
@@ -40,8 +46,11 @@ public class PBiOSEditAnimal {
 
     IOSDriver driver;
 
+    WebDriverWait wait;
+
     public void setUp(IOSDriver d){
         driver = d;
+        wait = new WebDriverWait(driver, TIMEWAIT);
     }
 
     private void navigateToHealth() {
@@ -54,48 +63,59 @@ public class PBiOSEditAnimal {
         scroll();
 
         driver.findElementByAccessibilityId("Health").click();
-
-
     }
 
-    public void changeWeight(int weight) throws InterruptedException {
-        navigateToHealth();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException ie) {
-        }
+    private void navigateToAnimal() throws InterruptedException {
+
         driver.context(getWebContext());
 
-        /*HashMap<String,Object> scrollObject = new HashMap<>();
-
-        scrollObject.put("direction","down");
-        scrollObject.put("value", "Rock Valley 9");
-
-        driver.executeScript("mobile:scroll", scrollObject);
-        */
-        //WebElement element = driver.findElement(By.tagName("div"));
-        List<WebElement> el = driver.findElements(By.xpath("//*[@class]"));
+        List<WebElement> el = driver.findElements(By.tagName("h2"));
         WebElement group = null;
         for (WebElement childElement: el){
-            System.out.println(childElement.getText());
-            if (childElement.getText() == "GroupOwners"){
+            if (Objects.equals(childElement.getText(), "Group1")){;
                 group = childElement;
             }
         }
 
        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", group);
         group.click();
-        Thread.sleep(2000);
+
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.cssSelector("#page-container > div.page-content.container-fluid.font-black.bg-white > div > div:nth-child(2) > div.col-md-8 > div:nth-child(1) > button")));
+
+        WebElement textbox = driver.findElement(By.cssSelector("#DataTables_Table_0_filter > label > input"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textbox);
+
+        textbox.sendKeys("qwerty\n");
+        driver.findElement(By.cssSelector("#animal_table_body > tr > td.dtr-control.sorting_1")).click();
+
+        driver.context("NATIVE_APP");
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.AccessibilityId("Edit"))).click();
+
+       driver.context(getWebContext());
     }
 
-    private String getWebContext(){
+    public void changeAnimalGender() throws InterruptedException {
+        navigateToHealth();
+        navigateToAnimal();
+    }
+
+    private String getWebContext() throws InterruptedException {
+
+        Thread.sleep(3000);
         ArrayList<String> contexts = new ArrayList(driver.getContextHandles());
-        for (String context : contexts){
-            if (!context.equals("NATIVE_APP")){
+        for (String context : contexts) {
+            if (!context.equals("NATIVE_APP")) {
                 return context;
             }
         }
+
+        getWebContext();
         return null;
+
     }
 
         private void scroll(){
