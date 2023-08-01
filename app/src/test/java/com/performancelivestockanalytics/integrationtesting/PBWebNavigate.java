@@ -29,9 +29,9 @@ public class PBWebNavigate implements Constants {
 
 
         /* Now confirm the navigation to overview. If successful, the assert will pass.
-           Determine the success by the existence of animals(pull-right class)
+           Determine the success by the existence of +/- head change button
            */
-        assert(wait.until(visibilityOfElementLocated(By.className("pull-right"))).isDisplayed());
+        assert(wait.until(visibilityOfElementLocated(By.id("btn_head_change"))).isDisplayed());
 
     }
 
