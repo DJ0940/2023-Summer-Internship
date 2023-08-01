@@ -69,10 +69,10 @@ public class PBiOSEditAnimal implements Constants {
 
         driver.context(getWebContext());
 
-        List<WebElement> el = driver.findElements(By.tagName("h2"));
+        List<WebElement> elements = driver.findElements(By.tagName("h2"));
         WebElement group = null;
-        for (WebElement childElement: el){
-            if (Objects.equals(childElement.getText(), "Group1")){;
+        for (WebElement childElement: elements){
+            if (Objects.equals(childElement.getText(), "Rock Valley 9")){;
                 group = childElement;
             }
         }
@@ -87,21 +87,31 @@ public class PBiOSEditAnimal implements Constants {
         WebElement textbox = driver.findElement(By.cssSelector("#DataTables_Table_0_filter > label > input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textbox);
 
-        textbox.sendKeys("qwerty\n");
+        textbox.sendKeys("BigBull\n");
         driver.findElement(By.cssSelector("#animal_table_body > tr > td.dtr-control.sorting_1")).click();
 
         driver.context("NATIVE_APP");
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Edit"))).click();
-
-       driver.context(getWebContext());
     }
 
     public void changeAnimalGender() throws InterruptedException {
         navigateToHealth();
         navigateToAnimal();
+
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.AccessibilityId("Pull Status")));
+
+        scroll();
+
+        driver.findElement(MobileBy.xpath("//XCUIElementTypeOther[@name=\"Performance Beef\"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[15]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther")).click();
+
+        List<WebElement> elements = driver.findElements(By.tagName(""));
+        Thread.sleep(3000);
     }
+
 
     private String getWebContext() throws InterruptedException {
 
