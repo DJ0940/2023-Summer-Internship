@@ -104,7 +104,7 @@ public class PBiOSLogin implements LoginInterface, Constants {
                         MobileBy.xpath("//XCUIElementTypeApplication" +
                                 "[@name=\"Performance Beef\"]/XCUIElementTypeWindow[1]" +
                                 "/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElement" +
-                                "TypeOther/XCUIElementTypeTextField"))).sendKeys(targetServer);
+                                "TypeOther/XCUIElementTypeTextField"))).sendKeys(targetServer+"\n");
 
         // Now the driver waits for the button that says Update to appear then the driver clicks on it.
         wait.until(

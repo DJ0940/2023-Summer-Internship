@@ -119,7 +119,7 @@ public class PRAndroidTransferAnimal implements Constants {
             // If the element's text is equal to the desired group then set
             // the group variable equal to found element and exit the loop.
             // TODO: Get the text of the desired group from a json file.
-            if (element.getText().equals("Group1")){
+            if (element.getText().equals("D-Group")){
                 group = element;
                 break;
             }
@@ -149,7 +149,7 @@ public class PRAndroidTransferAnimal implements Constants {
 
         for (WebElement element: childElements ){
             // TODO: Get the text of the desired pen from a json file.
-            if (element.getText().equals("2")){
+            if (element.getText().equals("D-Pen")){
                 pen = element;
                 break;
             }

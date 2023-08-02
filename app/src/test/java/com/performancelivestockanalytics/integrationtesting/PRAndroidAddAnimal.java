@@ -62,7 +62,7 @@ public class PRAndroidAddAnimal implements Constants {
         // Currently a hard coded date.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.AccessibilityId("02 July 2023"))).click();
+                        MobileBy.AccessibilityId("01 July 2023"))).click();
 
         // The driver clicks the OK button.
         driver.findElementById("android:id/button1").click();

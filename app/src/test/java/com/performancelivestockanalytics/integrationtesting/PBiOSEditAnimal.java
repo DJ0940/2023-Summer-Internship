@@ -64,7 +64,7 @@ public class PBiOSEditAnimal implements Constants {
         nav.navigateToOverview();
 
         // scrolls over to the health section.
-        scroll();
+        scroll(341, 631, 31,631);
 
         //Click on the health button.
         driver.findElementByAccessibilityId("Health").click();
@@ -79,7 +79,7 @@ public class PBiOSEditAnimal implements Constants {
         List<WebElement> elements = driver.findElements(By.tagName("h2"));
         WebElement group = null;
         for (WebElement childElement: elements){
-            if (Objects.equals(childElement.getText(), "Group1")){;
+            if (Objects.equals(childElement.getText(), "D-Group")){;
                 group = childElement;
             }
         }
@@ -117,6 +117,28 @@ public class PBiOSEditAnimal implements Constants {
                         MobileBy.AccessibilityId("Edit"))).click();
     }
 
+    public void deleteAnimal(String animalName) throws InterruptedException {
+
+        // First the driver navigates to the health section.
+        navigateToHealth();
+
+        // Then the driver navigates to the screen where it can edit the animal.
+        navigateToAnimal(animalName);
+
+        // The driver scrolls until it can view the delete animal button
+        scrollUntilVisible("AccessibilityID","Delete Animal");
+
+        // The driver then clicks on the button
+        driver.findElement(MobileBy.AccessibilityId("Delete Animal")).click();
+
+        // A popup appears to ask the user if they are sure about deleting the animal.
+        // The driver waits for the confirm button to appear and the driver clicks it.
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.AccessibilityId("Confirm"))).click();
+
+    }
+
     public void changeAnimalGender(String animalName) throws InterruptedException {
 
         // First the driver navigates to the health section.
@@ -127,14 +149,16 @@ public class PBiOSEditAnimal implements Constants {
 
         // To confirm the driver is on the correct screen it looks for the save changes button
         // and stores it into a variable for later.
-        WebElement saveBtn =  wait.until(
+        WebElement saveBtn = wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Save Changes")));
 
-        // The driver scrolls to where it can edit the animals gender.
-        scroll();
+        // The driver scrolls until the gender dropdown is visible.
+        scrollUntilVisible("xpath", "//XCUIElementTypeOther[@name=\"" +
+                "Performance Beef\"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[15]/XCUI" +
+                "ElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther");
 
-        // Driver clicks on the gender drop down menu.
+        // The driver then clicks on the gender drop down.
         driver.findElement(MobileBy.xpath("//XCUIElementTypeOther[@name=\"" +
                 "Performance Beef\"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[15]/XCUI" +
                 "ElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther")).click();
@@ -146,6 +170,7 @@ public class PBiOSEditAnimal implements Constants {
 
         // Finally the changes are saved.
         saveBtn.click();
+
     }
 
     private String getWebContext() throws InterruptedException {
@@ -167,12 +192,12 @@ public class PBiOSEditAnimal implements Constants {
         return null;
     }
 
-        private void scroll(){
+        private void scroll(int x1,int y1, int x2, int y2){
             // Setting up all of the interactions.
             PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-            Interaction moveToStart = finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 341, 631);
+            Interaction moveToStart = finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), x1, y1);
             Interaction pressDown = finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg());
-            Interaction moveToEnd = finger.createPointerMove(Duration.ofMillis(200L), PointerInput.Origin.viewport(), 31, 631);
+            Interaction moveToEnd = finger.createPointerMove(Duration.ofMillis(200L), PointerInput.Origin.viewport(), x2, y2);
             Interaction pressUp = finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg());
             Sequence swipe = new Sequence(finger, 0);
 
@@ -184,6 +209,31 @@ public class PBiOSEditAnimal implements Constants {
             this.driver.perform(Arrays.asList(swipe));
         }
 
+        // The two parameteres are selector or they locator strategy being used (Example: xpath, AccessibilityID,
+        // ID, etc). The other parameter is the string that actually points to the element.
+       private void scrollUntilVisible(String selector, String attribute) {
+        /* While the desired element is not visible the driver will slowly scroll
+           down until the desired element is then visible. The reason the condition only checks for xpath
+           is because currently only two methods use this. This can be changed to support any locating.
+           strategy.
+         */
+           boolean visibility = false;
+           while (!visibility) {
+               try {
+                   if(Objects.equals(selector, "xpath")){
+                       driver.findElement(MobileBy.xpath(attribute));
+                   }
+                   else{
+                       driver.findElement(MobileBy.AccessibilityId(attribute));
+                   }
+                   visibility = true;
+
+               } catch (Exception e) {
+                   scroll(175, 560, 175, 460);
+               }
+
+           }
+       }
     public IOSDriver getDriver(){
         return driver;
     }
