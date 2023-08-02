@@ -35,11 +35,11 @@ public class PBWebEditAnimal implements Constants{
            */
         if (!driver.findElement(By.className("page-title")).equals("Edit Group")) {
             // Not inside the edit group page
-            navigateToHealthGroup(targetGroup);
+            navigateToEditGroup(targetGroup);
         }
 
         // Navigate to edit animal page
-        navigateToEditAnimal(tagID);
+        navigateToViewEditAnimal(tagID);
 
         // Add a row
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-link='{on addAnimalHistory}']")))).click();
@@ -82,11 +82,11 @@ public class PBWebEditAnimal implements Constants{
            */
         if (!driver.findElement(By.className("page-title")).equals("Edit Group")) {
             // Not inside the edit group page
-            navigateToHealthGroup(targetGroup);
+            navigateToEditGroup(targetGroup);
         }
 
         // Navigate to edit animal page
-        navigateToEditAnimal(tagID);
+        navigateToViewEditAnimal(tagID);
 
         // Add a row
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-link='{on addCost}']")))).click();
@@ -143,16 +143,37 @@ public class PBWebEditAnimal implements Constants{
      * @param targetGroup - where tagID is located
      */
     public void deleteAnimal(String tagID, String targetGroup) {
-        navigateToHealthGroup(targetGroup);
-        navigateToEditAnimal(tagID);
+        navigateToEditGroup(targetGroup);
+        navigateToViewEditAnimal(tagID);
 
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-target='#deleteAnimalModal']")))).click();
 
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[data-link='{on ~root.removeAnimal}']")))).click();
     }
 
+    /**
+     * Track(Add) animal inside a group
+     * Assume Digital Tag is empty
+     */
+    public void trackAnimal(String visualTag, String targetGroup) {
+        navigateToEditGroup(targetGroup);
 
-    public void navigateToHealthGroup(String targetGroup) {
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("addTracing")))).click();
+
+        // Set visualTag (tagID)
+        checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.id("visual_tag")))).sendKeys(visualTag);
+
+        // Search for the confirm button
+        List<WebElement> buttons = driver.findElements(By.className("group-submit-animal"));
+        for (WebElement el : buttons) {
+            if (el.getText().trim().equals("Confirm")) {
+                el.click();
+                break;
+            }
+        }
+    }
+
+    public void navigateToEditGroup(String targetGroup) {
         // We need to remove any pop-ups, so by refreshing the page it will remove them
         driver.navigate().refresh();
 
@@ -175,9 +196,10 @@ public class PBWebEditAnimal implements Constants{
 
 
     /**
+     * This should not be called individually since it is a helper function for Edit Animal related calls
      * @param tagID - If the animal doesn't exists in side the group, the test will fail
      */
-    public void navigateToEditAnimal(String tagID) {
+    public void navigateToViewEditAnimal(String tagID) {
         /* Already inside the targetGroup */
 
         // Enter the animalName in the search bar
