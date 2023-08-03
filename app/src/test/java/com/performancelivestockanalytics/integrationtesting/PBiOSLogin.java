@@ -84,6 +84,8 @@ public class PBiOSLogin implements LoginInterface, Constants {
         /* Because appium's click method is too slow the driver can't just click the bluetooth devices
            five times with a for loop. To get around this issue the tapWithNumberOfTaps architecture
            will allow for faster clicks to access the screen to change the server host.
+            However appium currently has an issue with this where the parameters are read in the wrong way.
+            Check here: https://github.com/appium/appium/issues/18944 for more info.
          */
         MobileElement mobileElement =
                 (MobileElement) driver.findElement(By.name("Bluetooth Devices"));
