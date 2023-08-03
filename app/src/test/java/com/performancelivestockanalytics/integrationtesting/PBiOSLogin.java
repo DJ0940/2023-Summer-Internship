@@ -1,5 +1,6 @@
 package com.performancelivestockanalytics.integrationtesting;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Interaction;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
 
 public class PBiOSLogin implements LoginInterface, Constants {
@@ -76,14 +78,22 @@ public class PBiOSLogin implements LoginInterface, Constants {
         // After finding the settings button the driver clicks it.
         settings.click();
 
-        // TODO: Resurrect a way to automate multitap.
-
         // Scroll to the bottom of settings.
         scroll();
 
-        // This only works if the the server has already been changed once.
-        // TODO: Replace this with the multitap on the bluetooth devices.
-        driver.findElement(MobileBy.AccessibilityId("Set Server Host")).click();
+        /* Because appium's click method is too slow the driver can't just click the bluetooth devices
+           five times with a for loop. To get around this issue the tapWithNumberOfTaps architecture
+           will allow for faster clicks to access the screen to change the server host.
+         */
+        MobileElement mobileElement =
+                (MobileElement) driver.findElement(By.name("Bluetooth Devices"));
+
+        HashMap params = new HashMap();
+        params.put("element", 1);
+        params.put("numberOfTaps", 6);
+        params.put("numberOfTouches", mobileElement.getId().toString());
+
+        driver.executeScript("mobile:tapWithNumberOfTaps", params);
 
         // Now that the test is on the screen that allows the user to change the target server
         // the driver waits for the Dev Box to load in and click it.
