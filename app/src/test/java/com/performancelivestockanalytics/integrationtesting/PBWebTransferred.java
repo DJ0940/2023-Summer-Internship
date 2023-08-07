@@ -24,7 +24,7 @@ public class PBWebTransferred implements Constants {
      * Check for the animal name inside the Group that the animal was added to.
      * To view the transferred animal, it is located in group inside the Health tab
      */
-    public void checkTransferred(String animalName, String targetGroup) {
+    public void checkTransferred(String tagID, String targetGroup) {
         // We need to remove any pop-ups, so by refreshing the page it will remove them
         driver.navigate().refresh();
 
@@ -46,16 +46,16 @@ public class PBWebTransferred implements Constants {
 
         // Enter the animalName in the search bar
         checkVisibilityOrScroll(wait.until(visibilityOfElementLocated(By.cssSelector("[aria-controls='DataTables_Table_0']"))))
-                .sendKeys(animalName);
+                .sendKeys(tagID);
 
         /* Now confirm the existence of the animal. If successful, the assert will pass.
            Determine the success by the comparing the animal name that was searched to the animalName (param)
            */
-        List<WebElement> tagID = driver.findElements(By.className("sorting_1"));
+        List<WebElement> tagIDList = driver.findElements(By.className("sorting_1"));
         Boolean didAppear = false;
-        for (WebElement el : tagID) {
+        for (WebElement el : tagIDList) {
             // There are additional spaces for Tag Id within the animal names
-            if (el.getText().trim().equals(animalName)) {
+            if (el.getText().trim().equals(tagID)) {
                 didAppear = true;
                 break;
             }
