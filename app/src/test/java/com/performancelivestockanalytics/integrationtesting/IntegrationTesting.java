@@ -3,7 +3,7 @@ package com.performancelivestockanalytics.integrationtesting;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
+
 
 public class IntegrationTesting {
 
@@ -13,10 +13,11 @@ public class IntegrationTesting {
 
     @After
     public void tearDown() {
+
     }
 
     @Test
-    public void test() {
-        // Master branch leaves this empty for now -PG
+    public void test() throws Exception {
+        
     }
 }
