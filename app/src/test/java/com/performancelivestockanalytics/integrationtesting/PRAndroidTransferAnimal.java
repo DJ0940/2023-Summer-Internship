@@ -2,13 +2,21 @@ package com.performancelivestockanalytics.integrationtesting;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Interaction;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
+
+// Important note. A bug occurs where the animal will not be transferred if the
+// driver is teared down immediately following the test.
 
 public class PRAndroidTransferAnimal implements Constants {
 
@@ -19,7 +27,7 @@ public class PRAndroidTransferAnimal implements Constants {
         driver = d;
     }
 
-    public void transferAnimal() throws Exception {
+    public void transferAnimal(String animalName) throws Exception {
 
         WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
 
@@ -46,6 +54,8 @@ public class PRAndroidTransferAnimal implements Constants {
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("Transfer"))).click();
 
+
+
         // Wait for the calendar button to appear and click it.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
@@ -57,6 +67,11 @@ public class PRAndroidTransferAnimal implements Constants {
          */
 
         //TODO: Abstract the transfer date to be read from a json file.
+
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.AccessibilityId("Previous month"))).click();
+
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.AccessibilityId("15 July 2023"))).click();
@@ -70,10 +85,9 @@ public class PRAndroidTransferAnimal implements Constants {
                         MobileBy.id("com.perfomancebeef.android:id/departure_transfer_btn_visual_id"))).click();
 
         // Wait for search text box to appear and send in the ID for the desired animal.
-        // TODO: Abstract the ID to be read from a json file.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.id("android:id/search_src_text"))).sendKeys("AppiumTest7");
+                        MobileBy.id("android:id/search_src_text"))).sendKeys(animalName);
 
 
         // Driver clicks on the searched animal.
@@ -88,53 +102,65 @@ public class PRAndroidTransferAnimal implements Constants {
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.id("com.perfomancebeef.android:id/departure_transfer_group_spinner"))).click();
 
-        // Driver selects a group.
-        // TODO: Abstract the group name into a json file and change the logic to support that.
-        wait.until(
+        // Now that the group is open we create an element that contains all of the selectable groups.
+        WebElement groupSpinner = wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.xpath("/hierarchy/android.widget.FrameLayout/android.widget." +
-                                "FrameLayout/android.widget.ListView/android.widget.CheckedTextView[2]"))).click();
+                        MobileBy.className("android.widget.ListView")));
+
+        // Now a list is created that takes all of the child elements from the group spinner.
+        List<WebElement> elements = groupSpinner.findElements(By.id("android:id/text1"));
+
+        // This group element is set to null which is the same as it being empty.
+        WebElement group = null;
+
+        // For loop traverses through each child element in the list.
+        for (WebElement element: elements ){
+
+            // If the element's text is equal to the desired group then set
+            // the group variable equal to found element and exit the loop.
+            // TODO: Get the text of the desired group from a json file.
+            if (element.getText().equals("D-Group")){
+                group = element;
+                break;
+            }
+        }
+
+        // Next the driver clicks on the group.
+        if (group != null){
+            group.click();
+        }
+
 
         // Scroll so Pen and Transfer Animal are visible.
-        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                + "new UiSelector().textContains(\"Transfer Animal\"))"));
+        scroll();
 
         // Driver clicks on Pen.
         driver.findElementById("com.perfomancebeef.android:id/departure_transfer_pen_spinner").click();
 
-        // Now that the penSpinner is open we create an element that contains all of the selectable pens.
+        // Lines 136-155 is near identical to selecting a group except this
+        // time the driver selects a pen.
         WebElement penSpinner = wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.className("android.widget.ListView")));
 
-        // Now a list is created that takes all of the child elements from the pen spinner.
         List<WebElement> childElements = penSpinner.findElements(By.id("android:id/text1"));
 
-        // This pen element is set to null which is the same as it being empty.
         WebElement pen = null;
 
-        // For loop traverses through each child element in the list.
         for (WebElement element: childElements ){
-
-            // If the element's text is equal to the desired pen then set
-            // the pen variable equal to found element and exit the loop.
             // TODO: Get the text of the desired pen from a json file.
-            if (element.getText().equals("1123")){
+            if (element.getText().equals("D-Pen")){
                 pen = element;
                 break;
             }
         }
 
-        /* If the pen variable has an element contained then the driver clicks it.
-           If the pen variable is null then the test will fail because the desired pen
-           does not exist.
-         */
         if (pen != null){
             pen.click();
         }
 
-
         // The driver now waits for Transfer Animal button and clicks it.
+
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.id("com.perfomancebeef.android:id/departure_transfer_finish_btn"))).click();
@@ -152,5 +178,22 @@ public class PRAndroidTransferAnimal implements Constants {
 
         // If the message says anything else the transfer has failed and the test throws an exception.
         throw new Exception("Failed to transfer animal");
+    }
+
+    private void scroll(){
+        // Setting up all of the interactions.
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Interaction moveToStart = finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 500, 2100);
+        Interaction pressDown = finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg());
+        Interaction moveToEnd = finger.createPointerMove(Duration.ofMillis(200L), PointerInput.Origin.viewport(), 500, 220);
+        Interaction pressUp = finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg());
+        Sequence swipe = new Sequence(finger, 0);
+
+        // Executing the actions.
+        swipe.addAction(moveToStart);
+        swipe.addAction(pressDown);
+        swipe.addAction(moveToEnd);
+        swipe.addAction(pressUp);
+        this.driver.perform(Arrays.asList(swipe));
     }
 }

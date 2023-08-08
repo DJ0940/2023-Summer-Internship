@@ -2,9 +2,14 @@ package com.performancelivestockanalytics.integrationtesting;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Interaction;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 import io.appium.java_client.MobileBy;
@@ -17,7 +22,7 @@ public class PRAndroidAddAnimal implements Constants {
         driver = d;
     }
 
-    public void addAnimal() throws Exception {
+    public void addAnimal(String animalName) throws Exception {
 
         // Maximum time the driver is allowed to find an element
         WebDriverWait wait = new WebDriverWait(driver, TIMEWAIT);
@@ -49,10 +54,15 @@ public class PRAndroidAddAnimal implements Constants {
                 ExpectedConditions.presenceOfElementLocated(
                         MobileBy.id("com.perfomancebeef.android:id/add_animal_birthdate_textview"))).click();
 
+        // Select the Previous Month arrow on the calendar.
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(
+                        MobileBy.AccessibilityId("Previous month"))).click();
+
         // Currently a hard coded date.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.AccessibilityId("02 July 2023"))).click();
+                        MobileBy.AccessibilityId("01 July 2023"))).click();
 
         // The driver clicks the OK button.
         driver.findElementById("android:id/button1").click();
@@ -60,7 +70,7 @@ public class PRAndroidAddAnimal implements Constants {
         // The driver waits for the Visual ID text box to appear and send in the desired ID for the animal.
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
-                        MobileBy.id("com.perfomancebeef.android:id/add_animal_visualID_edittext"))).sendKeys("AppiumTest");
+                        MobileBy.id("com.perfomancebeef.android:id/add_animal_visualID_edittext"))).sendKeys(animalName);
 
         // The driver clicks on the gender spinner.
         driver.findElementById("com.perfomancebeef.android:id/add_animal_gender_spinner").click();
@@ -82,7 +92,7 @@ public class PRAndroidAddAnimal implements Constants {
             // If the elements text is equal to the desired gender then
             // it is store in the gender variable.
             // TODO: Read the desired gender from a json file.
-            if (element.getText().equals("Steer")){
+            if (element.getText().equals("Heifer")){
                 gender = element;
                 break;
             }
@@ -96,8 +106,7 @@ public class PRAndroidAddAnimal implements Constants {
         // Since their are no other required attributes the driver can now
         // scroll to the "Add Animal" button
 
-        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                + "new UiSelector().textContains(\"Add Animal\"))"));
+        scroll();
 
         // Once the driver has scrolled it clicks it.
         driver.findElementById("com.perfomancebeef.android:id/add_animal_finish_btn").click();
@@ -115,5 +124,22 @@ public class PRAndroidAddAnimal implements Constants {
         // If the text does not say Animal Added then the test has failed
         // so the test throws an exception.
         throw new Exception("Failed to add animal");
+    }
+
+    private void scroll(){
+        // Setting up all of the interactions.
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Interaction moveToStart = finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 500, 2100);
+        Interaction pressDown = finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg());
+        Interaction moveToEnd = finger.createPointerMove(Duration.ofMillis(200L), PointerInput.Origin.viewport(), 500, 220);
+        Interaction pressUp = finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg());
+        Sequence swipe = new Sequence(finger, 0);
+
+        // Executing the actions.
+        swipe.addAction(moveToStart);
+        swipe.addAction(pressDown);
+        swipe.addAction(moveToEnd);
+        swipe.addAction(pressUp);
+        this.driver.perform(Arrays.asList(swipe));
     }
 }

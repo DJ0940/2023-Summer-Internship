@@ -1,15 +1,22 @@
 package com.performancelivestockanalytics.integrationtesting;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Interaction;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
 
 public class PBiOSLogin implements LoginInterface, Constants {
@@ -71,14 +78,22 @@ public class PBiOSLogin implements LoginInterface, Constants {
         // After finding the settings button the driver clicks it.
         settings.click();
 
-        // Lines 82-87 allow Appium to scroll to the Bluetooth Devices bar.
-        // TODO: Resurrect a way to automate multitap.
-        HashMap<String,Object>scrollObject = new HashMap<>();
+        // Scroll to the bottom of settings.
+        scroll();
 
-        scrollObject.put("direction","down");
-        scrollObject.put("name", "Bluetooth Devices");
+        /* Because appium's click method is too slow the driver can't just click the bluetooth devices
+           five times with a for loop. To get around this issue the tapWithNumberOfTaps architecture
+           will allow for faster clicks to access the screen to change the server host.
+         */
+        MobileElement mobileElement =
+                (MobileElement) driver.findElement(By.name("Bluetooth Devices"));
 
-        driver.executeScript("mobile:scroll", scrollObject);
+        HashMap params = new HashMap();
+        params.put("numberOfTaps", 6);
+        params.put("numberOfTouches", 1);
+        params.put("element", mobileElement.getId());
+
+        driver.executeScript("mobile:tapWithNumberOfTaps", params);
 
         // Now that the test is on the screen that allows the user to change the target server
         // the driver waits for the Dev Box to load in and click it.
@@ -99,7 +114,7 @@ public class PBiOSLogin implements LoginInterface, Constants {
                         MobileBy.xpath("//XCUIElementTypeApplication" +
                                 "[@name=\"Performance Beef\"]/XCUIElementTypeWindow[1]" +
                                 "/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElement" +
-                                "TypeOther/XCUIElementTypeTextField"))).sendKeys(targetServer);
+                                "TypeOther/XCUIElementTypeTextField"))).sendKeys(targetServer+"\n");
 
         // Now the driver waits for the button that says Update to appear then the driver clicks on it.
         wait.until(
@@ -186,6 +201,23 @@ public class PBiOSLogin implements LoginInterface, Constants {
 
         throw new Exception("Failed to login");
 
+    }
+
+    private void scroll(){
+        // Setting up all of the interactions.
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Interaction moveToStart = finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 186, 519);
+        Interaction pressDown = finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg());
+        Interaction moveToEnd = finger.createPointerMove(Duration.ofMillis(400L), PointerInput.Origin.viewport(), 186, 75);
+        Interaction pressUp = finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg());
+        Sequence swipe = new Sequence(finger, 0);
+
+        // Executing the actions.
+        swipe.addAction(moveToStart);
+        swipe.addAction(pressDown);
+        swipe.addAction(moveToEnd);
+        swipe.addAction(pressUp);
+        this.driver.perform(Arrays.asList(swipe));
     }
 
     // This method returns the driver that is being used to run this test.
